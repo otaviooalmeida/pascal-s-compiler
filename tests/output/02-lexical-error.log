@@ -1,4 +1,4 @@
-$ python3 yacc.py tests/02-lexical-error.pas
+$ .venv/bin/python yacc.py tests/02-lexical-error.pas
 Lexical error at 5:16: illegal character '@'
 Syntax error at 5:18: unexpected 5 (NUM_INT)
 [exit code: 1]

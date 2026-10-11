@@ -24,9 +24,9 @@ The three compiler modules are implemented; `tests/` contains the required sampl
 | `symbol_table.py` | Symbol records, nested environments, declaration/lookup, direct references, duplicate/undeclared detection. This module's filename is our choice; the PDF does not name it. |
 | `yacc.py` | PLY LALR(1) grammar, precedence, semantic checks, semicolon recovery, and the `python3 yacc.py input.pas` entry point. |
 
-PLY is the only required third-party dependency (`python3 -m pip install ply`, preferably inside a virtual environment). The import aliases `ply_lex` and `ply_yacc` avoid confusion with the local module filenames.
+PLY is the only required third-party dependency (`requirements.txt`). Set up and run the project with `python3 -m venv .venv`, `.venv/bin/python -m pip install -r requirements.txt`, and `.venv/bin/python yacc.py path/to/input.pas`. The import aliases `ply_lex` and `ply_yacc` avoid confusion with the local module filenames.
 
-Suggested interface after implementation: `python3 yacc.py path/to/input.pas`. The PDF does not prescribe a CLI. Report whether front-end validation succeeded; do **not** execute the Pascal-S program. Do not report success after any compilation error.
+The PDF does not prescribe a CLI. Report whether front-end validation succeeded; do **not** execute the Pascal-S program. Do not report success after any compilation error.
 
 ## Domain language
 
