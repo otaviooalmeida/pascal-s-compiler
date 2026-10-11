@@ -1,0 +1,4 @@
+$ python3 yacc.py tests/04-syntax-recovery.pas
+Syntax error at 6:10: unexpected ';' (SEMICOLON)
+Syntax error at 7:12: unexpected 3 (NUM_INT)
+[exit code: 1]
