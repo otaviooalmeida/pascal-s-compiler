@@ -1,0 +1,14 @@
+--- ERROS LÉXICOS ---
+1. Uso do caractere '@' que é desconhecido pelo léxico do Pascal-S 
+2. String literal não fechada (aspas simples faltando no final) 
+3. Uso do caractere '#' que não faz parte do conjunto de símbolos válidos 
+
+--- ERROS SINTÁTICOS ---
+1. Omissão da palavra-chave 'then' obrigatória na estrutura condicional 
+2. Ausência de ponto e vírgula (;) separando comandos consecutivos 
+3. Expressão sintaticamente malformada (parêntese fechando com argumento faltando)
+
+--- ERROS SEMÂNTICOS ---
+1. Incompatibilidade de tipos na atribuição (atribuir booleano a uma variável inteira)
+2. Uso de uma variável 'z' que nunca foi declarada na seção var
+3. Incompatibilidade de tipo em parâmetro de função (passar string para um parâmetro integer)
