@@ -1,0 +1,9 @@
+$ .venv/bin/python yacc.py tests/26-reserved-keywords-as-identifiers.pas
+Syntax error at 3:5: unexpected 'array' (ARRAY)
+Syntax error at 4:5: unexpected 'case' (CASE)
+Syntax error at 5:5: unexpected 'const' (CONST)
+Syntax error at 6:5: unexpected 'div' (DIV)
+Syntax error at 7:5: unexpected 'downto' (DOWNTO)
+Syntax error at 8:5: unexpected 'for' (FOR)
+Syntax error at 9:13: unexpected ':' (COLON)
+[exit code: 1]

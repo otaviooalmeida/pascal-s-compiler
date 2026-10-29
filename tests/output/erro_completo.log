@@ -1,0 +1,8 @@
+$ .venv/bin/python yacc.py tests/erro_completo.pas
+Syntax error at 3:14: unexpected 'integer' (INTEGER)
+Syntax error at 4:15: unexpected ';' (SEMICOLON)
+Lexical error at 9:13: unterminated string literal
+Syntax error at 10:7: unexpected ':=' (ASSIGN)
+Syntax error at 11:15: unexpected '2' (NUM_INT)
+Semantic error at 12:5: cannot assign boolean to integer variable 'x'
+[exit code: 1]

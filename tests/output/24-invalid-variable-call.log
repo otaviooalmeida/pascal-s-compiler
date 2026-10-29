@@ -1,0 +1,3 @@
+$ .venv/bin/python yacc.py tests/24-invalid-variable-call.pas
+Semantic error at 5:10: 'dobro' is not a function
+[exit code: 1]

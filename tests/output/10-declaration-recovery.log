@@ -1,0 +1,7 @@
+$ .venv/bin/python yacc.py tests/10-declaration-recovery.pas
+Syntax error at 3:12: unexpected 'integer' (INTEGER)
+Syntax error at 4:20: unexpected ';' (SEMICOLON)
+Syntax error at 11:19: unexpected '2' (NUM_INT)
+Syntax error at 12:19: unexpected '4' (NUM_INT)
+Syntax error at 14:15: unexpected '6' (NUM_INT)
+[exit code: 1]

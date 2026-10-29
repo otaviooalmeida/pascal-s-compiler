@@ -1,0 +1,4 @@
+$ .venv/bin/python yacc.py tests/29-unterminated-string.pas
+Lexical error at 3:13: unterminated string literal
+Syntax error at 4:5: unexpected 'writeln' (WRITELN)
+[exit code: 1]

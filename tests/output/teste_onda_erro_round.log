@@ -1,0 +1,3 @@
+$ .venv/bin/python yacc.py tests/teste_onda_erro_round.pas
+Semantic error at 8:18: undeclared function 'round'
+[exit code: 1]

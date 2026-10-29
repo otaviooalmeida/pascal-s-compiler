@@ -1,0 +1,4200 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> program_header uses_section body DOT
+Rule 2     program_header -> PROGRAM ID program_files SEMICOLON
+Rule 3     program_files -> LPAREN id_list RPAREN
+Rule 4     program_files -> empty
+Rule 5     uses_section -> USES library_list SEMICOLON
+Rule 6     uses_section -> empty
+Rule 7     library_list -> library_name
+Rule 8     library_list -> library_list COMMA library_name
+Rule 9     library_name -> ID
+Rule 10    body -> decl_list callable_list block
+Rule 11    decl_list -> const_section type_section var_section
+Rule 12    const_section -> CONST const_groups
+Rule 13    const_section -> empty
+Rule 14    const_groups -> const_group
+Rule 15    const_groups -> const_groups const_group
+Rule 16    const_group -> ID EQ expr SEMICOLON
+Rule 17    type_section -> TYPE type_groups
+Rule 18    type_section -> empty
+Rule 19    type_groups -> type_group
+Rule 20    type_groups -> type_groups type_group
+Rule 21    type_group -> ID EQ type SEMICOLON
+Rule 22    var_section -> VAR decl_group_list
+Rule 23    var_section -> empty
+Rule 24    decl_group_list -> decl_group
+Rule 25    decl_group_list -> decl_group_list decl_group
+Rule 26    decl_group -> id_list COLON type SEMICOLON
+Rule 27    decl_group -> error SEMICOLON
+Rule 28    type_group -> error SEMICOLON
+Rule 29    const_group -> error SEMICOLON
+Rule 30    id_list -> ID
+Rule 31    id_list -> id_list COMMA ID
+Rule 32    type -> INTEGER
+Rule 33    type -> REAL
+Rule 34    type -> ID
+Rule 35    type -> ARRAY LBRACKET bounds RBRACKET OF type
+Rule 36    bounds -> bound
+Rule 37    bounds -> bounds COMMA bound
+Rule 38    bound -> expr RANGE expr
+Rule 39    callable_list -> callable_list callable_decl
+Rule 40    callable_list -> empty
+Rule 41    callable_start -> FUNCTION ID
+Rule 42    callable_start -> PROCEDURE ID
+Rule 43    callable_header -> callable_start formal_parameters result_spec SEMICOLON
+Rule 44    result_spec -> COLON type
+Rule 45    result_spec -> empty
+Rule 46    formal_parameters -> LPAREN parameter_groups RPAREN
+Rule 47    formal_parameters -> LPAREN RPAREN
+Rule 48    formal_parameters -> empty
+Rule 49    parameter_groups -> parameter_group
+Rule 50    parameter_groups -> parameter_groups SEMICOLON parameter_group
+Rule 51    parameter_group -> parameter_mode id_list COLON type
+Rule 52    parameter_mode -> VAR
+Rule 53    parameter_mode -> empty
+Rule 54    callable_decl -> callable_header body SEMICOLON
+Rule 55    block_open -> BEGIN
+Rule 56    block -> block_open stmt_list END
+Rule 57    stmt_list -> stmt
+Rule 58    stmt_list -> stmt_list SEMICOLON stmt
+Rule 59    stmt_list -> error SEMICOLON stmt
+Rule 60    stmt_list -> stmt_list SEMICOLON error SEMICOLON stmt
+Rule 61    stmt -> assign_stmt
+Rule 62    stmt -> call_stmt
+Rule 63    stmt -> if_stmt
+Rule 64    stmt -> while_stmt
+Rule 65    stmt -> for_stmt
+Rule 66    stmt -> repeat_stmt
+Rule 67    stmt -> write_stmt
+Rule 68    stmt -> block
+Rule 69    stmt -> empty
+Rule 70    empty -> <empty>
+Rule 71    designator -> ID
+Rule 72    designator -> designator LBRACKET expr_list RBRACKET
+Rule 73    designator -> call LBRACKET expr_list RBRACKET
+Rule 74    assign_stmt -> designator ASSIGN expr
+Rule 75    call -> designator LPAREN arguments RPAREN
+Rule 76    call_stmt -> call
+Rule 77    call_stmt -> designator
+Rule 78    if_stmt -> IF expr THEN stmt
+Rule 79    if_stmt -> IF expr THEN stmt ELSE stmt
+Rule 80    while_stmt -> WHILE expr DO stmt
+Rule 81    for_header -> FOR designator ASSIGN expr direction expr step_spec DO
+Rule 82    for_stmt -> for_header stmt
+Rule 83    direction -> TO
+Rule 84    direction -> DOWNTO
+Rule 85    step_spec -> STEP expr
+Rule 86    step_spec -> empty
+Rule 87    repeat_stmt -> REPEAT stmt_list UNTIL expr
+Rule 88    write_stmt -> WRITELN LPAREN expr_list RPAREN
+Rule 89    expr_list -> expr
+Rule 90    expr_list -> expr_list COMMA expr
+Rule 91    arguments -> expr_list
+Rule 92    arguments -> empty
+Rule 93    expr -> simple_expr
+Rule 94    expr -> simple_expr relop simple_expr
+Rule 95    simple_expr -> term
+Rule 96    simple_expr -> simple_expr addop term
+Rule 97    term -> factor
+Rule 98    term -> term mulop factor
+Rule 99    factor -> designator
+Rule 100   factor -> call
+Rule 101   factor -> NUM_INT
+Rule 102   factor -> NUM_REAL
+Rule 103   factor -> CHAR_LITERAL
+Rule 104   factor -> STRING_LITERAL
+Rule 105   factor -> LPAREN expr RPAREN
+Rule 106   factor -> PLUS factor
+Rule 107   factor -> MINUS factor
+Rule 108   factor -> NOT factor
+Rule 109   relop -> EQ
+Rule 110   relop -> NE
+Rule 111   relop -> LT
+Rule 112   relop -> LE
+Rule 113   relop -> GT
+Rule 114   relop -> GE
+Rule 115   addop -> PLUS
+Rule 116   addop -> MINUS
+Rule 117   addop -> OR
+Rule 118   mulop -> TIMES
+Rule 119   mulop -> DIVIDE
+Rule 120   mulop -> DIV
+Rule 121   mulop -> MOD
+Rule 122   mulop -> AND
+
+Terminals, with rules where they appear
+
+AND                  : 122
+ARRAY                : 35
+ASSIGN               : 74 81
+BEGIN                : 55
+CHAR_LITERAL         : 103
+COLON                : 26 44 51
+COMMA                : 8 31 37 90
+CONST                : 12
+DIV                  : 120
+DIVIDE               : 119
+DO                   : 80 81
+DOT                  : 1
+DOWNTO               : 84
+ELSE                 : 79
+END                  : 56
+EQ                   : 16 21 109
+FOR                  : 81
+FUNCTION             : 41
+GE                   : 114
+GT                   : 113
+ID                   : 2 9 16 21 30 31 34 41 42 71
+IF                   : 78 79
+INTEGER              : 32
+LBRACKET             : 35 72 73
+LE                   : 112
+LPAREN               : 3 46 47 75 88 105
+LT                   : 111
+MINUS                : 107 116
+MOD                  : 121
+NE                   : 110
+NOT                  : 108
+NUM_INT              : 101
+NUM_REAL             : 102
+OF                   : 35
+OR                   : 117
+PLUS                 : 106 115
+PROCEDURE            : 42
+PROGRAM              : 2
+RANGE                : 38
+RBRACKET             : 35 72 73
+REAL                 : 33
+REPEAT               : 87
+RPAREN               : 3 46 47 75 88 105
+SEMICOLON            : 2 5 16 21 26 27 28 29 43 50 54 58 59 60 60
+STEP                 : 85
+STRING_LITERAL       : 104
+THEN                 : 78 79
+TIMES                : 118
+TO                   : 83
+TYPE                 : 17
+UNTIL                : 87
+USES                 : 5
+VAR                  : 22 52
+WHILE                : 80
+WRITELN              : 88
+error                : 27 28 29 59 60
+
+Nonterminals, with rules where they appear
+
+addop                : 96
+arguments            : 75
+assign_stmt          : 61
+block                : 10 68
+block_open           : 56
+body                 : 1 54
+bound                : 36 37
+bounds               : 35 37
+call                 : 73 76 100
+call_stmt            : 62
+callable_decl        : 39
+callable_header      : 54
+callable_list        : 10 39
+callable_start       : 43
+const_group          : 14 15
+const_groups         : 12 15
+const_section        : 11
+decl_group           : 24 25
+decl_group_list      : 22 25
+decl_list            : 10
+designator           : 72 74 75 77 81 99
+direction            : 81
+empty                : 4 6 13 18 23 40 45 48 53 69 86 92
+expr                 : 16 38 38 74 78 79 80 81 81 85 87 89 90 105
+expr_list            : 72 73 88 90 91
+factor               : 97 98 106 107 108
+for_header           : 82
+for_stmt             : 65
+formal_parameters    : 43
+id_list              : 3 26 31 51
+if_stmt              : 63
+library_list         : 5 8
+library_name         : 7 8
+mulop                : 98
+parameter_group      : 49 50
+parameter_groups     : 46 50
+parameter_mode       : 51
+program              : 0
+program_files        : 2
+program_header       : 1
+relop                : 94
+repeat_stmt          : 66
+result_spec          : 43
+simple_expr          : 93 94 94 96
+step_spec            : 81
+stmt                 : 57 58 59 60 78 79 79 80 82
+stmt_list            : 56 58 60 87
+term                 : 95 96 98
+type                 : 21 26 35 44 51
+type_group           : 19 20
+type_groups          : 17 20
+type_section         : 11
+uses_section         : 1
+var_section          : 11
+while_stmt           : 64
+write_stmt           : 67
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . program_header uses_section body DOT
+    (2) program_header -> . PROGRAM ID program_files SEMICOLON
+
+    PROGRAM         shift and go to state 3
+
+    program                        shift and go to state 1
+    program_header                 shift and go to state 2
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> program_header . uses_section body DOT
+    (5) uses_section -> . USES library_list SEMICOLON
+    (6) uses_section -> . empty
+    (70) empty -> .
+
+    USES            shift and go to state 5
+    CONST           reduce using rule 70 (empty -> .)
+    BEGIN           reduce using rule 70 (empty -> .)
+    FUNCTION        reduce using rule 70 (empty -> .)
+    PROCEDURE       reduce using rule 70 (empty -> .)
+    TYPE            reduce using rule 70 (empty -> .)
+    VAR             reduce using rule 70 (empty -> .)
+
+    uses_section                   shift and go to state 4
+    empty                          shift and go to state 6
+
+state 3
+
+    (2) program_header -> PROGRAM . ID program_files SEMICOLON
+
+    ID              shift and go to state 7
+
+
+state 4
+
+    (1) program -> program_header uses_section . body DOT
+    (10) body -> . decl_list callable_list block
+    (11) decl_list -> . const_section type_section var_section
+    (12) const_section -> . CONST const_groups
+    (13) const_section -> . empty
+    (70) empty -> .
+
+    CONST           shift and go to state 11
+    TYPE            reduce using rule 70 (empty -> .)
+    VAR             reduce using rule 70 (empty -> .)
+    BEGIN           reduce using rule 70 (empty -> .)
+    FUNCTION        reduce using rule 70 (empty -> .)
+    PROCEDURE       reduce using rule 70 (empty -> .)
+
+    body                           shift and go to state 8
+    decl_list                      shift and go to state 9
+    const_section                  shift and go to state 10
+    empty                          shift and go to state 12
+
+state 5
+
+    (5) uses_section -> USES . library_list SEMICOLON
+    (7) library_list -> . library_name
+    (8) library_list -> . library_list COMMA library_name
+    (9) library_name -> . ID
+
+    ID              shift and go to state 15
+
+    library_list                   shift and go to state 13
+    library_name                   shift and go to state 14
+
+state 6
+
+    (6) uses_section -> empty .
+
+    CONST           reduce using rule 6 (uses_section -> empty .)
+    BEGIN           reduce using rule 6 (uses_section -> empty .)
+    FUNCTION        reduce using rule 6 (uses_section -> empty .)
+    PROCEDURE       reduce using rule 6 (uses_section -> empty .)
+    TYPE            reduce using rule 6 (uses_section -> empty .)
+    VAR             reduce using rule 6 (uses_section -> empty .)
+
+
+state 7
+
+    (2) program_header -> PROGRAM ID . program_files SEMICOLON
+    (3) program_files -> . LPAREN id_list RPAREN
+    (4) program_files -> . empty
+    (70) empty -> .
+
+    LPAREN          shift and go to state 17
+    SEMICOLON       reduce using rule 70 (empty -> .)
+
+    program_files                  shift and go to state 16
+    empty                          shift and go to state 18
+
+state 8
+
+    (1) program -> program_header uses_section body . DOT
+
+    DOT             shift and go to state 19
+
+
+state 9
+
+    (10) body -> decl_list . callable_list block
+    (39) callable_list -> . callable_list callable_decl
+    (40) callable_list -> . empty
+    (70) empty -> .
+
+    BEGIN           reduce using rule 70 (empty -> .)
+    FUNCTION        reduce using rule 70 (empty -> .)
+    PROCEDURE       reduce using rule 70 (empty -> .)
+
+    callable_list                  shift and go to state 20
+    empty                          shift and go to state 21
+
+state 10
+
+    (11) decl_list -> const_section . type_section var_section
+    (17) type_section -> . TYPE type_groups
+    (18) type_section -> . empty
+    (70) empty -> .
+
+    TYPE            shift and go to state 23
+    VAR             reduce using rule 70 (empty -> .)
+    BEGIN           reduce using rule 70 (empty -> .)
+    FUNCTION        reduce using rule 70 (empty -> .)
+    PROCEDURE       reduce using rule 70 (empty -> .)
+
+    type_section                   shift and go to state 22
+    empty                          shift and go to state 24
+
+state 11
+
+    (12) const_section -> CONST . const_groups
+    (14) const_groups -> . const_group
+    (15) const_groups -> . const_groups const_group
+    (16) const_group -> . ID EQ expr SEMICOLON
+    (29) const_group -> . error SEMICOLON
+
+    ID              shift and go to state 27
+    error           shift and go to state 28
+
+    const_groups                   shift and go to state 25
+    const_group                    shift and go to state 26
+
+state 12
+
+    (13) const_section -> empty .
+
+    TYPE            reduce using rule 13 (const_section -> empty .)
+    VAR             reduce using rule 13 (const_section -> empty .)
+    BEGIN           reduce using rule 13 (const_section -> empty .)
+    FUNCTION        reduce using rule 13 (const_section -> empty .)
+    PROCEDURE       reduce using rule 13 (const_section -> empty .)
+
+
+state 13
+
+    (5) uses_section -> USES library_list . SEMICOLON
+    (8) library_list -> library_list . COMMA library_name
+
+    SEMICOLON       shift and go to state 29
+    COMMA           shift and go to state 30
+
+
+state 14
+
+    (7) library_list -> library_name .
+
+    SEMICOLON       reduce using rule 7 (library_list -> library_name .)
+    COMMA           reduce using rule 7 (library_list -> library_name .)
+
+
+state 15
+
+    (9) library_name -> ID .
+
+    SEMICOLON       reduce using rule 9 (library_name -> ID .)
+    COMMA           reduce using rule 9 (library_name -> ID .)
+
+
+state 16
+
+    (2) program_header -> PROGRAM ID program_files . SEMICOLON
+
+    SEMICOLON       shift and go to state 31
+
+
+state 17
+
+    (3) program_files -> LPAREN . id_list RPAREN
+    (30) id_list -> . ID
+    (31) id_list -> . id_list COMMA ID
+
+    ID              shift and go to state 33
+
+    id_list                        shift and go to state 32
+
+state 18
+
+    (4) program_files -> empty .
+
+    SEMICOLON       reduce using rule 4 (program_files -> empty .)
+
+
+state 19
+
+    (1) program -> program_header uses_section body DOT .
+
+    $end            reduce using rule 1 (program -> program_header uses_section body DOT .)
+
+
+state 20
+
+    (10) body -> decl_list callable_list . block
+    (39) callable_list -> callable_list . callable_decl
+    (56) block -> . block_open stmt_list END
+    (54) callable_decl -> . callable_header body SEMICOLON
+    (55) block_open -> . BEGIN
+    (43) callable_header -> . callable_start formal_parameters result_spec SEMICOLON
+    (41) callable_start -> . FUNCTION ID
+    (42) callable_start -> . PROCEDURE ID
+
+    BEGIN           shift and go to state 38
+    FUNCTION        shift and go to state 40
+    PROCEDURE       shift and go to state 41
+
+    block                          shift and go to state 34
+    callable_decl                  shift and go to state 35
+    block_open                     shift and go to state 36
+    callable_header                shift and go to state 37
+    callable_start                 shift and go to state 39
+
+state 21
+
+    (40) callable_list -> empty .
+
+    BEGIN           reduce using rule 40 (callable_list -> empty .)
+    FUNCTION        reduce using rule 40 (callable_list -> empty .)
+    PROCEDURE       reduce using rule 40 (callable_list -> empty .)
+
+
+state 22
+
+    (11) decl_list -> const_section type_section . var_section
+    (22) var_section -> . VAR decl_group_list
+    (23) var_section -> . empty
+    (70) empty -> .
+
+    VAR             shift and go to state 43
+    BEGIN           reduce using rule 70 (empty -> .)
+    FUNCTION        reduce using rule 70 (empty -> .)
+    PROCEDURE       reduce using rule 70 (empty -> .)
+
+    var_section                    shift and go to state 42
+    empty                          shift and go to state 44
+
+state 23
+
+    (17) type_section -> TYPE . type_groups
+    (19) type_groups -> . type_group
+    (20) type_groups -> . type_groups type_group
+    (21) type_group -> . ID EQ type SEMICOLON
+    (28) type_group -> . error SEMICOLON
+
+    ID              shift and go to state 47
+    error           shift and go to state 48
+
+    type_groups                    shift and go to state 45
+    type_group                     shift and go to state 46
+
+state 24
+
+    (18) type_section -> empty .
+
+    VAR             reduce using rule 18 (type_section -> empty .)
+    BEGIN           reduce using rule 18 (type_section -> empty .)
+    FUNCTION        reduce using rule 18 (type_section -> empty .)
+    PROCEDURE       reduce using rule 18 (type_section -> empty .)
+
+
+state 25
+
+    (12) const_section -> CONST const_groups .
+    (15) const_groups -> const_groups . const_group
+    (16) const_group -> . ID EQ expr SEMICOLON
+    (29) const_group -> . error SEMICOLON
+
+    TYPE            reduce using rule 12 (const_section -> CONST const_groups .)
+    VAR             reduce using rule 12 (const_section -> CONST const_groups .)
+    BEGIN           reduce using rule 12 (const_section -> CONST const_groups .)
+    FUNCTION        reduce using rule 12 (const_section -> CONST const_groups .)
+    PROCEDURE       reduce using rule 12 (const_section -> CONST const_groups .)
+    ID              shift and go to state 27
+    error           shift and go to state 28
+
+    const_group                    shift and go to state 49
+
+state 26
+
+    (14) const_groups -> const_group .
+
+    ID              reduce using rule 14 (const_groups -> const_group .)
+    error           reduce using rule 14 (const_groups -> const_group .)
+    TYPE            reduce using rule 14 (const_groups -> const_group .)
+    VAR             reduce using rule 14 (const_groups -> const_group .)
+    BEGIN           reduce using rule 14 (const_groups -> const_group .)
+    FUNCTION        reduce using rule 14 (const_groups -> const_group .)
+    PROCEDURE       reduce using rule 14 (const_groups -> const_group .)
+
+
+state 27
+
+    (16) const_group -> ID . EQ expr SEMICOLON
+
+    EQ              shift and go to state 50
+
+
+state 28
+
+    (29) const_group -> error . SEMICOLON
+
+    SEMICOLON       shift and go to state 51
+
+
+state 29
+
+    (5) uses_section -> USES library_list SEMICOLON .
+
+    CONST           reduce using rule 5 (uses_section -> USES library_list SEMICOLON .)
+    BEGIN           reduce using rule 5 (uses_section -> USES library_list SEMICOLON .)
+    FUNCTION        reduce using rule 5 (uses_section -> USES library_list SEMICOLON .)
+    PROCEDURE       reduce using rule 5 (uses_section -> USES library_list SEMICOLON .)
+    TYPE            reduce using rule 5 (uses_section -> USES library_list SEMICOLON .)
+    VAR             reduce using rule 5 (uses_section -> USES library_list SEMICOLON .)
+
+
+state 30
+
+    (8) library_list -> library_list COMMA . library_name
+    (9) library_name -> . ID
+
+    ID              shift and go to state 15
+
+    library_name                   shift and go to state 52
+
+state 31
+
+    (2) program_header -> PROGRAM ID program_files SEMICOLON .
+
+    USES            reduce using rule 2 (program_header -> PROGRAM ID program_files SEMICOLON .)
+    CONST           reduce using rule 2 (program_header -> PROGRAM ID program_files SEMICOLON .)
+    BEGIN           reduce using rule 2 (program_header -> PROGRAM ID program_files SEMICOLON .)
+    FUNCTION        reduce using rule 2 (program_header -> PROGRAM ID program_files SEMICOLON .)
+    PROCEDURE       reduce using rule 2 (program_header -> PROGRAM ID program_files SEMICOLON .)
+    TYPE            reduce using rule 2 (program_header -> PROGRAM ID program_files SEMICOLON .)
+    VAR             reduce using rule 2 (program_header -> PROGRAM ID program_files SEMICOLON .)
+
+
+state 32
+
+    (3) program_files -> LPAREN id_list . RPAREN
+    (31) id_list -> id_list . COMMA ID
+
+    RPAREN          shift and go to state 53
+    COMMA           shift and go to state 54
+
+
+state 33
+
+    (30) id_list -> ID .
+
+    RPAREN          reduce using rule 30 (id_list -> ID .)
+    COMMA           reduce using rule 30 (id_list -> ID .)
+    COLON           reduce using rule 30 (id_list -> ID .)
+
+
+state 34
+
+    (10) body -> decl_list callable_list block .
+
+    DOT             reduce using rule 10 (body -> decl_list callable_list block .)
+    SEMICOLON       reduce using rule 10 (body -> decl_list callable_list block .)
+
+
+state 35
+
+    (39) callable_list -> callable_list callable_decl .
+
+    BEGIN           reduce using rule 39 (callable_list -> callable_list callable_decl .)
+    FUNCTION        reduce using rule 39 (callable_list -> callable_list callable_decl .)
+    PROCEDURE       reduce using rule 39 (callable_list -> callable_list callable_decl .)
+
+
+state 36
+
+    (56) block -> block_open . stmt_list END
+    (57) stmt_list -> . stmt
+    (58) stmt_list -> . stmt_list SEMICOLON stmt
+    (59) stmt_list -> . error SEMICOLON stmt
+    (60) stmt_list -> . stmt_list SEMICOLON error SEMICOLON stmt
+    (61) stmt -> . assign_stmt
+    (62) stmt -> . call_stmt
+    (63) stmt -> . if_stmt
+    (64) stmt -> . while_stmt
+    (65) stmt -> . for_stmt
+    (66) stmt -> . repeat_stmt
+    (67) stmt -> . write_stmt
+    (68) stmt -> . block
+    (69) stmt -> . empty
+    (74) assign_stmt -> . designator ASSIGN expr
+    (76) call_stmt -> . call
+    (77) call_stmt -> . designator
+    (78) if_stmt -> . IF expr THEN stmt
+    (79) if_stmt -> . IF expr THEN stmt ELSE stmt
+    (80) while_stmt -> . WHILE expr DO stmt
+    (82) for_stmt -> . for_header stmt
+    (87) repeat_stmt -> . REPEAT stmt_list UNTIL expr
+    (88) write_stmt -> . WRITELN LPAREN expr_list RPAREN
+    (56) block -> . block_open stmt_list END
+    (70) empty -> .
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+    (81) for_header -> . FOR designator ASSIGN expr direction expr step_spec DO
+    (55) block_open -> . BEGIN
+
+    error           shift and go to state 57
+    IF              shift and go to state 69
+    WHILE           shift and go to state 70
+    REPEAT          shift and go to state 72
+    WRITELN         shift and go to state 73
+    END             reduce using rule 70 (empty -> .)
+    SEMICOLON       reduce using rule 70 (empty -> .)
+    ID              shift and go to state 74
+    FOR             shift and go to state 75
+    BEGIN           shift and go to state 38
+
+    block_open                     shift and go to state 36
+    stmt_list                      shift and go to state 55
+    stmt                           shift and go to state 56
+    assign_stmt                    shift and go to state 58
+    call_stmt                      shift and go to state 59
+    if_stmt                        shift and go to state 60
+    while_stmt                     shift and go to state 61
+    for_stmt                       shift and go to state 62
+    repeat_stmt                    shift and go to state 63
+    write_stmt                     shift and go to state 64
+    block                          shift and go to state 65
+    empty                          shift and go to state 66
+    designator                     shift and go to state 67
+    call                           shift and go to state 68
+    for_header                     shift and go to state 71
+
+state 37
+
+    (54) callable_decl -> callable_header . body SEMICOLON
+    (10) body -> . decl_list callable_list block
+    (11) decl_list -> . const_section type_section var_section
+    (12) const_section -> . CONST const_groups
+    (13) const_section -> . empty
+    (70) empty -> .
+
+    CONST           shift and go to state 11
+    TYPE            reduce using rule 70 (empty -> .)
+    VAR             reduce using rule 70 (empty -> .)
+    BEGIN           reduce using rule 70 (empty -> .)
+    FUNCTION        reduce using rule 70 (empty -> .)
+    PROCEDURE       reduce using rule 70 (empty -> .)
+
+    body                           shift and go to state 76
+    decl_list                      shift and go to state 9
+    const_section                  shift and go to state 10
+    empty                          shift and go to state 12
+
+state 38
+
+    (55) block_open -> BEGIN .
+
+    error           reduce using rule 55 (block_open -> BEGIN .)
+    IF              reduce using rule 55 (block_open -> BEGIN .)
+    WHILE           reduce using rule 55 (block_open -> BEGIN .)
+    REPEAT          reduce using rule 55 (block_open -> BEGIN .)
+    WRITELN         reduce using rule 55 (block_open -> BEGIN .)
+    ID              reduce using rule 55 (block_open -> BEGIN .)
+    FOR             reduce using rule 55 (block_open -> BEGIN .)
+    BEGIN           reduce using rule 55 (block_open -> BEGIN .)
+    END             reduce using rule 55 (block_open -> BEGIN .)
+    SEMICOLON       reduce using rule 55 (block_open -> BEGIN .)
+
+
+state 39
+
+    (43) callable_header -> callable_start . formal_parameters result_spec SEMICOLON
+    (46) formal_parameters -> . LPAREN parameter_groups RPAREN
+    (47) formal_parameters -> . LPAREN RPAREN
+    (48) formal_parameters -> . empty
+    (70) empty -> .
+
+    LPAREN          shift and go to state 78
+    COLON           reduce using rule 70 (empty -> .)
+    SEMICOLON       reduce using rule 70 (empty -> .)
+
+    formal_parameters              shift and go to state 77
+    empty                          shift and go to state 79
+
+state 40
+
+    (41) callable_start -> FUNCTION . ID
+
+    ID              shift and go to state 80
+
+
+state 41
+
+    (42) callable_start -> PROCEDURE . ID
+
+    ID              shift and go to state 81
+
+
+state 42
+
+    (11) decl_list -> const_section type_section var_section .
+
+    BEGIN           reduce using rule 11 (decl_list -> const_section type_section var_section .)
+    FUNCTION        reduce using rule 11 (decl_list -> const_section type_section var_section .)
+    PROCEDURE       reduce using rule 11 (decl_list -> const_section type_section var_section .)
+
+
+state 43
+
+    (22) var_section -> VAR . decl_group_list
+    (24) decl_group_list -> . decl_group
+    (25) decl_group_list -> . decl_group_list decl_group
+    (26) decl_group -> . id_list COLON type SEMICOLON
+    (27) decl_group -> . error SEMICOLON
+    (30) id_list -> . ID
+    (31) id_list -> . id_list COMMA ID
+
+    error           shift and go to state 85
+    ID              shift and go to state 33
+
+    decl_group_list                shift and go to state 82
+    decl_group                     shift and go to state 83
+    id_list                        shift and go to state 84
+
+state 44
+
+    (23) var_section -> empty .
+
+    BEGIN           reduce using rule 23 (var_section -> empty .)
+    FUNCTION        reduce using rule 23 (var_section -> empty .)
+    PROCEDURE       reduce using rule 23 (var_section -> empty .)
+
+
+state 45
+
+    (17) type_section -> TYPE type_groups .
+    (20) type_groups -> type_groups . type_group
+    (21) type_group -> . ID EQ type SEMICOLON
+    (28) type_group -> . error SEMICOLON
+
+    VAR             reduce using rule 17 (type_section -> TYPE type_groups .)
+    BEGIN           reduce using rule 17 (type_section -> TYPE type_groups .)
+    FUNCTION        reduce using rule 17 (type_section -> TYPE type_groups .)
+    PROCEDURE       reduce using rule 17 (type_section -> TYPE type_groups .)
+    ID              shift and go to state 47
+    error           shift and go to state 48
+
+    type_group                     shift and go to state 86
+
+state 46
+
+    (19) type_groups -> type_group .
+
+    ID              reduce using rule 19 (type_groups -> type_group .)
+    error           reduce using rule 19 (type_groups -> type_group .)
+    VAR             reduce using rule 19 (type_groups -> type_group .)
+    BEGIN           reduce using rule 19 (type_groups -> type_group .)
+    FUNCTION        reduce using rule 19 (type_groups -> type_group .)
+    PROCEDURE       reduce using rule 19 (type_groups -> type_group .)
+
+
+state 47
+
+    (21) type_group -> ID . EQ type SEMICOLON
+
+    EQ              shift and go to state 87
+
+
+state 48
+
+    (28) type_group -> error . SEMICOLON
+
+    SEMICOLON       shift and go to state 88
+
+
+state 49
+
+    (15) const_groups -> const_groups const_group .
+
+    ID              reduce using rule 15 (const_groups -> const_groups const_group .)
+    error           reduce using rule 15 (const_groups -> const_groups const_group .)
+    TYPE            reduce using rule 15 (const_groups -> const_groups const_group .)
+    VAR             reduce using rule 15 (const_groups -> const_groups const_group .)
+    BEGIN           reduce using rule 15 (const_groups -> const_groups const_group .)
+    FUNCTION        reduce using rule 15 (const_groups -> const_groups const_group .)
+    PROCEDURE       reduce using rule 15 (const_groups -> const_groups const_group .)
+
+
+state 50
+
+    (16) const_group -> ID EQ . expr SEMICOLON
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    expr                           shift and go to state 89
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 51
+
+    (29) const_group -> error SEMICOLON .
+
+    ID              reduce using rule 29 (const_group -> error SEMICOLON .)
+    error           reduce using rule 29 (const_group -> error SEMICOLON .)
+    TYPE            reduce using rule 29 (const_group -> error SEMICOLON .)
+    VAR             reduce using rule 29 (const_group -> error SEMICOLON .)
+    BEGIN           reduce using rule 29 (const_group -> error SEMICOLON .)
+    FUNCTION        reduce using rule 29 (const_group -> error SEMICOLON .)
+    PROCEDURE       reduce using rule 29 (const_group -> error SEMICOLON .)
+
+
+state 52
+
+    (8) library_list -> library_list COMMA library_name .
+
+    SEMICOLON       reduce using rule 8 (library_list -> library_list COMMA library_name .)
+    COMMA           reduce using rule 8 (library_list -> library_list COMMA library_name .)
+
+
+state 53
+
+    (3) program_files -> LPAREN id_list RPAREN .
+
+    SEMICOLON       reduce using rule 3 (program_files -> LPAREN id_list RPAREN .)
+
+
+state 54
+
+    (31) id_list -> id_list COMMA . ID
+
+    ID              shift and go to state 103
+
+
+state 55
+
+    (56) block -> block_open stmt_list . END
+    (58) stmt_list -> stmt_list . SEMICOLON stmt
+    (60) stmt_list -> stmt_list . SEMICOLON error SEMICOLON stmt
+
+    END             shift and go to state 104
+    SEMICOLON       shift and go to state 105
+
+
+state 56
+
+    (57) stmt_list -> stmt .
+
+    END             reduce using rule 57 (stmt_list -> stmt .)
+    SEMICOLON       reduce using rule 57 (stmt_list -> stmt .)
+    UNTIL           reduce using rule 57 (stmt_list -> stmt .)
+
+
+state 57
+
+    (59) stmt_list -> error . SEMICOLON stmt
+
+    SEMICOLON       shift and go to state 106
+
+
+state 58
+
+    (61) stmt -> assign_stmt .
+
+    END             reduce using rule 61 (stmt -> assign_stmt .)
+    SEMICOLON       reduce using rule 61 (stmt -> assign_stmt .)
+    UNTIL           reduce using rule 61 (stmt -> assign_stmt .)
+    ELSE            reduce using rule 61 (stmt -> assign_stmt .)
+
+
+state 59
+
+    (62) stmt -> call_stmt .
+
+    END             reduce using rule 62 (stmt -> call_stmt .)
+    SEMICOLON       reduce using rule 62 (stmt -> call_stmt .)
+    UNTIL           reduce using rule 62 (stmt -> call_stmt .)
+    ELSE            reduce using rule 62 (stmt -> call_stmt .)
+
+
+state 60
+
+    (63) stmt -> if_stmt .
+
+    END             reduce using rule 63 (stmt -> if_stmt .)
+    SEMICOLON       reduce using rule 63 (stmt -> if_stmt .)
+    UNTIL           reduce using rule 63 (stmt -> if_stmt .)
+    ELSE            reduce using rule 63 (stmt -> if_stmt .)
+
+
+state 61
+
+    (64) stmt -> while_stmt .
+
+    END             reduce using rule 64 (stmt -> while_stmt .)
+    SEMICOLON       reduce using rule 64 (stmt -> while_stmt .)
+    UNTIL           reduce using rule 64 (stmt -> while_stmt .)
+    ELSE            reduce using rule 64 (stmt -> while_stmt .)
+
+
+state 62
+
+    (65) stmt -> for_stmt .
+
+    END             reduce using rule 65 (stmt -> for_stmt .)
+    SEMICOLON       reduce using rule 65 (stmt -> for_stmt .)
+    UNTIL           reduce using rule 65 (stmt -> for_stmt .)
+    ELSE            reduce using rule 65 (stmt -> for_stmt .)
+
+
+state 63
+
+    (66) stmt -> repeat_stmt .
+
+    END             reduce using rule 66 (stmt -> repeat_stmt .)
+    SEMICOLON       reduce using rule 66 (stmt -> repeat_stmt .)
+    UNTIL           reduce using rule 66 (stmt -> repeat_stmt .)
+    ELSE            reduce using rule 66 (stmt -> repeat_stmt .)
+
+
+state 64
+
+    (67) stmt -> write_stmt .
+
+    END             reduce using rule 67 (stmt -> write_stmt .)
+    SEMICOLON       reduce using rule 67 (stmt -> write_stmt .)
+    UNTIL           reduce using rule 67 (stmt -> write_stmt .)
+    ELSE            reduce using rule 67 (stmt -> write_stmt .)
+
+
+state 65
+
+    (68) stmt -> block .
+
+    END             reduce using rule 68 (stmt -> block .)
+    SEMICOLON       reduce using rule 68 (stmt -> block .)
+    UNTIL           reduce using rule 68 (stmt -> block .)
+    ELSE            reduce using rule 68 (stmt -> block .)
+
+
+state 66
+
+    (69) stmt -> empty .
+
+    END             reduce using rule 69 (stmt -> empty .)
+    SEMICOLON       reduce using rule 69 (stmt -> empty .)
+    UNTIL           reduce using rule 69 (stmt -> empty .)
+    ELSE            reduce using rule 69 (stmt -> empty .)
+
+
+state 67
+
+    (74) assign_stmt -> designator . ASSIGN expr
+    (77) call_stmt -> designator .
+    (72) designator -> designator . LBRACKET expr_list RBRACKET
+    (75) call -> designator . LPAREN arguments RPAREN
+
+    ASSIGN          shift and go to state 107
+    END             reduce using rule 77 (call_stmt -> designator .)
+    SEMICOLON       reduce using rule 77 (call_stmt -> designator .)
+    UNTIL           reduce using rule 77 (call_stmt -> designator .)
+    ELSE            reduce using rule 77 (call_stmt -> designator .)
+    LBRACKET        shift and go to state 108
+    LPAREN          shift and go to state 109
+
+
+state 68
+
+    (76) call_stmt -> call .
+    (73) designator -> call . LBRACKET expr_list RBRACKET
+
+    END             reduce using rule 76 (call_stmt -> call .)
+    SEMICOLON       reduce using rule 76 (call_stmt -> call .)
+    UNTIL           reduce using rule 76 (call_stmt -> call .)
+    ELSE            reduce using rule 76 (call_stmt -> call .)
+    LBRACKET        shift and go to state 110
+
+
+state 69
+
+    (78) if_stmt -> IF . expr THEN stmt
+    (79) if_stmt -> IF . expr THEN stmt ELSE stmt
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    expr                           shift and go to state 111
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 70
+
+    (80) while_stmt -> WHILE . expr DO stmt
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    expr                           shift and go to state 112
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 71
+
+    (82) for_stmt -> for_header . stmt
+    (61) stmt -> . assign_stmt
+    (62) stmt -> . call_stmt
+    (63) stmt -> . if_stmt
+    (64) stmt -> . while_stmt
+    (65) stmt -> . for_stmt
+    (66) stmt -> . repeat_stmt
+    (67) stmt -> . write_stmt
+    (68) stmt -> . block
+    (69) stmt -> . empty
+    (74) assign_stmt -> . designator ASSIGN expr
+    (76) call_stmt -> . call
+    (77) call_stmt -> . designator
+    (78) if_stmt -> . IF expr THEN stmt
+    (79) if_stmt -> . IF expr THEN stmt ELSE stmt
+    (80) while_stmt -> . WHILE expr DO stmt
+    (82) for_stmt -> . for_header stmt
+    (87) repeat_stmt -> . REPEAT stmt_list UNTIL expr
+    (88) write_stmt -> . WRITELN LPAREN expr_list RPAREN
+    (56) block -> . block_open stmt_list END
+    (70) empty -> .
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+    (81) for_header -> . FOR designator ASSIGN expr direction expr step_spec DO
+    (55) block_open -> . BEGIN
+
+    IF              shift and go to state 69
+    WHILE           shift and go to state 70
+    REPEAT          shift and go to state 72
+    WRITELN         shift and go to state 73
+    END             reduce using rule 70 (empty -> .)
+    SEMICOLON       reduce using rule 70 (empty -> .)
+    UNTIL           reduce using rule 70 (empty -> .)
+    ELSE            reduce using rule 70 (empty -> .)
+    ID              shift and go to state 74
+    FOR             shift and go to state 75
+    BEGIN           shift and go to state 38
+
+    for_header                     shift and go to state 71
+    stmt                           shift and go to state 113
+    assign_stmt                    shift and go to state 58
+    call_stmt                      shift and go to state 59
+    if_stmt                        shift and go to state 60
+    while_stmt                     shift and go to state 61
+    for_stmt                       shift and go to state 62
+    repeat_stmt                    shift and go to state 63
+    write_stmt                     shift and go to state 64
+    block                          shift and go to state 65
+    empty                          shift and go to state 66
+    designator                     shift and go to state 67
+    call                           shift and go to state 68
+    block_open                     shift and go to state 36
+
+state 72
+
+    (87) repeat_stmt -> REPEAT . stmt_list UNTIL expr
+    (57) stmt_list -> . stmt
+    (58) stmt_list -> . stmt_list SEMICOLON stmt
+    (59) stmt_list -> . error SEMICOLON stmt
+    (60) stmt_list -> . stmt_list SEMICOLON error SEMICOLON stmt
+    (61) stmt -> . assign_stmt
+    (62) stmt -> . call_stmt
+    (63) stmt -> . if_stmt
+    (64) stmt -> . while_stmt
+    (65) stmt -> . for_stmt
+    (66) stmt -> . repeat_stmt
+    (67) stmt -> . write_stmt
+    (68) stmt -> . block
+    (69) stmt -> . empty
+    (74) assign_stmt -> . designator ASSIGN expr
+    (76) call_stmt -> . call
+    (77) call_stmt -> . designator
+    (78) if_stmt -> . IF expr THEN stmt
+    (79) if_stmt -> . IF expr THEN stmt ELSE stmt
+    (80) while_stmt -> . WHILE expr DO stmt
+    (82) for_stmt -> . for_header stmt
+    (87) repeat_stmt -> . REPEAT stmt_list UNTIL expr
+    (88) write_stmt -> . WRITELN LPAREN expr_list RPAREN
+    (56) block -> . block_open stmt_list END
+    (70) empty -> .
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+    (81) for_header -> . FOR designator ASSIGN expr direction expr step_spec DO
+    (55) block_open -> . BEGIN
+
+    error           shift and go to state 57
+    IF              shift and go to state 69
+    WHILE           shift and go to state 70
+    REPEAT          shift and go to state 72
+    WRITELN         shift and go to state 73
+    UNTIL           reduce using rule 70 (empty -> .)
+    SEMICOLON       reduce using rule 70 (empty -> .)
+    ID              shift and go to state 74
+    FOR             shift and go to state 75
+    BEGIN           shift and go to state 38
+
+    stmt_list                      shift and go to state 114
+    stmt                           shift and go to state 56
+    assign_stmt                    shift and go to state 58
+    call_stmt                      shift and go to state 59
+    if_stmt                        shift and go to state 60
+    while_stmt                     shift and go to state 61
+    for_stmt                       shift and go to state 62
+    repeat_stmt                    shift and go to state 63
+    write_stmt                     shift and go to state 64
+    block                          shift and go to state 65
+    empty                          shift and go to state 66
+    designator                     shift and go to state 67
+    call                           shift and go to state 68
+    for_header                     shift and go to state 71
+    block_open                     shift and go to state 36
+
+state 73
+
+    (88) write_stmt -> WRITELN . LPAREN expr_list RPAREN
+
+    LPAREN          shift and go to state 115
+
+
+state 74
+
+    (71) designator -> ID .
+
+    ASSIGN          reduce using rule 71 (designator -> ID .)
+    LBRACKET        reduce using rule 71 (designator -> ID .)
+    LPAREN          reduce using rule 71 (designator -> ID .)
+    END             reduce using rule 71 (designator -> ID .)
+    SEMICOLON       reduce using rule 71 (designator -> ID .)
+    TIMES           reduce using rule 71 (designator -> ID .)
+    DIVIDE          reduce using rule 71 (designator -> ID .)
+    DIV             reduce using rule 71 (designator -> ID .)
+    MOD             reduce using rule 71 (designator -> ID .)
+    AND             reduce using rule 71 (designator -> ID .)
+    EQ              reduce using rule 71 (designator -> ID .)
+    NE              reduce using rule 71 (designator -> ID .)
+    LT              reduce using rule 71 (designator -> ID .)
+    LE              reduce using rule 71 (designator -> ID .)
+    GT              reduce using rule 71 (designator -> ID .)
+    GE              reduce using rule 71 (designator -> ID .)
+    PLUS            reduce using rule 71 (designator -> ID .)
+    MINUS           reduce using rule 71 (designator -> ID .)
+    OR              reduce using rule 71 (designator -> ID .)
+    THEN            reduce using rule 71 (designator -> ID .)
+    DO              reduce using rule 71 (designator -> ID .)
+    UNTIL           reduce using rule 71 (designator -> ID .)
+    ELSE            reduce using rule 71 (designator -> ID .)
+    RPAREN          reduce using rule 71 (designator -> ID .)
+    RBRACKET        reduce using rule 71 (designator -> ID .)
+    COMMA           reduce using rule 71 (designator -> ID .)
+    TO              reduce using rule 71 (designator -> ID .)
+    DOWNTO          reduce using rule 71 (designator -> ID .)
+    RANGE           reduce using rule 71 (designator -> ID .)
+    STEP            reduce using rule 71 (designator -> ID .)
+
+
+state 75
+
+    (81) for_header -> FOR . designator ASSIGN expr direction expr step_spec DO
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    ID              shift and go to state 74
+
+    designator                     shift and go to state 116
+    call                           shift and go to state 117
+
+state 76
+
+    (54) callable_decl -> callable_header body . SEMICOLON
+
+    SEMICOLON       shift and go to state 118
+
+
+state 77
+
+    (43) callable_header -> callable_start formal_parameters . result_spec SEMICOLON
+    (44) result_spec -> . COLON type
+    (45) result_spec -> . empty
+    (70) empty -> .
+
+    COLON           shift and go to state 120
+    SEMICOLON       reduce using rule 70 (empty -> .)
+
+    result_spec                    shift and go to state 119
+    empty                          shift and go to state 121
+
+state 78
+
+    (46) formal_parameters -> LPAREN . parameter_groups RPAREN
+    (47) formal_parameters -> LPAREN . RPAREN
+    (49) parameter_groups -> . parameter_group
+    (50) parameter_groups -> . parameter_groups SEMICOLON parameter_group
+    (51) parameter_group -> . parameter_mode id_list COLON type
+    (52) parameter_mode -> . VAR
+    (53) parameter_mode -> . empty
+    (70) empty -> .
+
+    RPAREN          shift and go to state 123
+    VAR             shift and go to state 126
+    ID              reduce using rule 70 (empty -> .)
+
+    parameter_groups               shift and go to state 122
+    parameter_group                shift and go to state 124
+    parameter_mode                 shift and go to state 125
+    empty                          shift and go to state 127
+
+state 79
+
+    (48) formal_parameters -> empty .
+
+    COLON           reduce using rule 48 (formal_parameters -> empty .)
+    SEMICOLON       reduce using rule 48 (formal_parameters -> empty .)
+
+
+state 80
+
+    (41) callable_start -> FUNCTION ID .
+
+    LPAREN          reduce using rule 41 (callable_start -> FUNCTION ID .)
+    COLON           reduce using rule 41 (callable_start -> FUNCTION ID .)
+    SEMICOLON       reduce using rule 41 (callable_start -> FUNCTION ID .)
+
+
+state 81
+
+    (42) callable_start -> PROCEDURE ID .
+
+    LPAREN          reduce using rule 42 (callable_start -> PROCEDURE ID .)
+    COLON           reduce using rule 42 (callable_start -> PROCEDURE ID .)
+    SEMICOLON       reduce using rule 42 (callable_start -> PROCEDURE ID .)
+
+
+state 82
+
+    (22) var_section -> VAR decl_group_list .
+    (25) decl_group_list -> decl_group_list . decl_group
+    (26) decl_group -> . id_list COLON type SEMICOLON
+    (27) decl_group -> . error SEMICOLON
+    (30) id_list -> . ID
+    (31) id_list -> . id_list COMMA ID
+
+    BEGIN           reduce using rule 22 (var_section -> VAR decl_group_list .)
+    FUNCTION        reduce using rule 22 (var_section -> VAR decl_group_list .)
+    PROCEDURE       reduce using rule 22 (var_section -> VAR decl_group_list .)
+    error           shift and go to state 85
+    ID              shift and go to state 33
+
+    decl_group                     shift and go to state 128
+    id_list                        shift and go to state 84
+
+state 83
+
+    (24) decl_group_list -> decl_group .
+
+    error           reduce using rule 24 (decl_group_list -> decl_group .)
+    ID              reduce using rule 24 (decl_group_list -> decl_group .)
+    BEGIN           reduce using rule 24 (decl_group_list -> decl_group .)
+    FUNCTION        reduce using rule 24 (decl_group_list -> decl_group .)
+    PROCEDURE       reduce using rule 24 (decl_group_list -> decl_group .)
+
+
+state 84
+
+    (26) decl_group -> id_list . COLON type SEMICOLON
+    (31) id_list -> id_list . COMMA ID
+
+    COLON           shift and go to state 129
+    COMMA           shift and go to state 54
+
+
+state 85
+
+    (27) decl_group -> error . SEMICOLON
+
+    SEMICOLON       shift and go to state 130
+
+
+state 86
+
+    (20) type_groups -> type_groups type_group .
+
+    ID              reduce using rule 20 (type_groups -> type_groups type_group .)
+    error           reduce using rule 20 (type_groups -> type_groups type_group .)
+    VAR             reduce using rule 20 (type_groups -> type_groups type_group .)
+    BEGIN           reduce using rule 20 (type_groups -> type_groups type_group .)
+    FUNCTION        reduce using rule 20 (type_groups -> type_groups type_group .)
+    PROCEDURE       reduce using rule 20 (type_groups -> type_groups type_group .)
+
+
+state 87
+
+    (21) type_group -> ID EQ . type SEMICOLON
+    (32) type -> . INTEGER
+    (33) type -> . REAL
+    (34) type -> . ID
+    (35) type -> . ARRAY LBRACKET bounds RBRACKET OF type
+
+    INTEGER         shift and go to state 133
+    REAL            shift and go to state 134
+    ID              shift and go to state 131
+    ARRAY           shift and go to state 135
+
+    type                           shift and go to state 132
+
+state 88
+
+    (28) type_group -> error SEMICOLON .
+
+    ID              reduce using rule 28 (type_group -> error SEMICOLON .)
+    error           reduce using rule 28 (type_group -> error SEMICOLON .)
+    VAR             reduce using rule 28 (type_group -> error SEMICOLON .)
+    BEGIN           reduce using rule 28 (type_group -> error SEMICOLON .)
+    FUNCTION        reduce using rule 28 (type_group -> error SEMICOLON .)
+    PROCEDURE       reduce using rule 28 (type_group -> error SEMICOLON .)
+
+
+state 89
+
+    (16) const_group -> ID EQ expr . SEMICOLON
+
+    SEMICOLON       shift and go to state 136
+
+
+state 90
+
+    (93) expr -> simple_expr .
+    (94) expr -> simple_expr . relop simple_expr
+    (96) simple_expr -> simple_expr . addop term
+    (109) relop -> . EQ
+    (110) relop -> . NE
+    (111) relop -> . LT
+    (112) relop -> . LE
+    (113) relop -> . GT
+    (114) relop -> . GE
+    (115) addop -> . PLUS
+    (116) addop -> . MINUS
+    (117) addop -> . OR
+
+    SEMICOLON       reduce using rule 93 (expr -> simple_expr .)
+    THEN            reduce using rule 93 (expr -> simple_expr .)
+    DO              reduce using rule 93 (expr -> simple_expr .)
+    RPAREN          reduce using rule 93 (expr -> simple_expr .)
+    END             reduce using rule 93 (expr -> simple_expr .)
+    UNTIL           reduce using rule 93 (expr -> simple_expr .)
+    ELSE            reduce using rule 93 (expr -> simple_expr .)
+    RBRACKET        reduce using rule 93 (expr -> simple_expr .)
+    COMMA           reduce using rule 93 (expr -> simple_expr .)
+    TO              reduce using rule 93 (expr -> simple_expr .)
+    DOWNTO          reduce using rule 93 (expr -> simple_expr .)
+    RANGE           reduce using rule 93 (expr -> simple_expr .)
+    STEP            reduce using rule 93 (expr -> simple_expr .)
+    EQ              shift and go to state 139
+    NE              shift and go to state 140
+    LT              shift and go to state 141
+    LE              shift and go to state 142
+    GT              shift and go to state 143
+    GE              shift and go to state 144
+    PLUS            shift and go to state 145
+    MINUS           shift and go to state 146
+    OR              shift and go to state 147
+
+    relop                          shift and go to state 137
+    addop                          shift and go to state 138
+
+state 91
+
+    (95) simple_expr -> term .
+    (98) term -> term . mulop factor
+    (118) mulop -> . TIMES
+    (119) mulop -> . DIVIDE
+    (120) mulop -> . DIV
+    (121) mulop -> . MOD
+    (122) mulop -> . AND
+
+    EQ              reduce using rule 95 (simple_expr -> term .)
+    NE              reduce using rule 95 (simple_expr -> term .)
+    LT              reduce using rule 95 (simple_expr -> term .)
+    LE              reduce using rule 95 (simple_expr -> term .)
+    GT              reduce using rule 95 (simple_expr -> term .)
+    GE              reduce using rule 95 (simple_expr -> term .)
+    PLUS            reduce using rule 95 (simple_expr -> term .)
+    MINUS           reduce using rule 95 (simple_expr -> term .)
+    OR              reduce using rule 95 (simple_expr -> term .)
+    SEMICOLON       reduce using rule 95 (simple_expr -> term .)
+    THEN            reduce using rule 95 (simple_expr -> term .)
+    DO              reduce using rule 95 (simple_expr -> term .)
+    RPAREN          reduce using rule 95 (simple_expr -> term .)
+    END             reduce using rule 95 (simple_expr -> term .)
+    UNTIL           reduce using rule 95 (simple_expr -> term .)
+    ELSE            reduce using rule 95 (simple_expr -> term .)
+    RBRACKET        reduce using rule 95 (simple_expr -> term .)
+    COMMA           reduce using rule 95 (simple_expr -> term .)
+    TO              reduce using rule 95 (simple_expr -> term .)
+    DOWNTO          reduce using rule 95 (simple_expr -> term .)
+    RANGE           reduce using rule 95 (simple_expr -> term .)
+    STEP            reduce using rule 95 (simple_expr -> term .)
+    TIMES           shift and go to state 149
+    DIVIDE          shift and go to state 150
+    DIV             shift and go to state 151
+    MOD             shift and go to state 152
+    AND             shift and go to state 153
+
+    mulop                          shift and go to state 148
+
+state 92
+
+    (97) term -> factor .
+
+    TIMES           reduce using rule 97 (term -> factor .)
+    DIVIDE          reduce using rule 97 (term -> factor .)
+    DIV             reduce using rule 97 (term -> factor .)
+    MOD             reduce using rule 97 (term -> factor .)
+    AND             reduce using rule 97 (term -> factor .)
+    EQ              reduce using rule 97 (term -> factor .)
+    NE              reduce using rule 97 (term -> factor .)
+    LT              reduce using rule 97 (term -> factor .)
+    LE              reduce using rule 97 (term -> factor .)
+    GT              reduce using rule 97 (term -> factor .)
+    GE              reduce using rule 97 (term -> factor .)
+    PLUS            reduce using rule 97 (term -> factor .)
+    MINUS           reduce using rule 97 (term -> factor .)
+    OR              reduce using rule 97 (term -> factor .)
+    SEMICOLON       reduce using rule 97 (term -> factor .)
+    THEN            reduce using rule 97 (term -> factor .)
+    DO              reduce using rule 97 (term -> factor .)
+    RPAREN          reduce using rule 97 (term -> factor .)
+    END             reduce using rule 97 (term -> factor .)
+    UNTIL           reduce using rule 97 (term -> factor .)
+    ELSE            reduce using rule 97 (term -> factor .)
+    RBRACKET        reduce using rule 97 (term -> factor .)
+    COMMA           reduce using rule 97 (term -> factor .)
+    TO              reduce using rule 97 (term -> factor .)
+    DOWNTO          reduce using rule 97 (term -> factor .)
+    RANGE           reduce using rule 97 (term -> factor .)
+    STEP            reduce using rule 97 (term -> factor .)
+
+
+state 93
+
+    (99) factor -> designator .
+    (72) designator -> designator . LBRACKET expr_list RBRACKET
+    (75) call -> designator . LPAREN arguments RPAREN
+
+    TIMES           reduce using rule 99 (factor -> designator .)
+    DIVIDE          reduce using rule 99 (factor -> designator .)
+    DIV             reduce using rule 99 (factor -> designator .)
+    MOD             reduce using rule 99 (factor -> designator .)
+    AND             reduce using rule 99 (factor -> designator .)
+    EQ              reduce using rule 99 (factor -> designator .)
+    NE              reduce using rule 99 (factor -> designator .)
+    LT              reduce using rule 99 (factor -> designator .)
+    LE              reduce using rule 99 (factor -> designator .)
+    GT              reduce using rule 99 (factor -> designator .)
+    GE              reduce using rule 99 (factor -> designator .)
+    PLUS            reduce using rule 99 (factor -> designator .)
+    MINUS           reduce using rule 99 (factor -> designator .)
+    OR              reduce using rule 99 (factor -> designator .)
+    SEMICOLON       reduce using rule 99 (factor -> designator .)
+    THEN            reduce using rule 99 (factor -> designator .)
+    DO              reduce using rule 99 (factor -> designator .)
+    RPAREN          reduce using rule 99 (factor -> designator .)
+    END             reduce using rule 99 (factor -> designator .)
+    UNTIL           reduce using rule 99 (factor -> designator .)
+    ELSE            reduce using rule 99 (factor -> designator .)
+    RBRACKET        reduce using rule 99 (factor -> designator .)
+    COMMA           reduce using rule 99 (factor -> designator .)
+    TO              reduce using rule 99 (factor -> designator .)
+    DOWNTO          reduce using rule 99 (factor -> designator .)
+    RANGE           reduce using rule 99 (factor -> designator .)
+    STEP            reduce using rule 99 (factor -> designator .)
+    LBRACKET        shift and go to state 108
+    LPAREN          shift and go to state 109
+
+
+state 94
+
+    (100) factor -> call .
+    (73) designator -> call . LBRACKET expr_list RBRACKET
+
+    TIMES           reduce using rule 100 (factor -> call .)
+    DIVIDE          reduce using rule 100 (factor -> call .)
+    DIV             reduce using rule 100 (factor -> call .)
+    MOD             reduce using rule 100 (factor -> call .)
+    AND             reduce using rule 100 (factor -> call .)
+    EQ              reduce using rule 100 (factor -> call .)
+    NE              reduce using rule 100 (factor -> call .)
+    LT              reduce using rule 100 (factor -> call .)
+    LE              reduce using rule 100 (factor -> call .)
+    GT              reduce using rule 100 (factor -> call .)
+    GE              reduce using rule 100 (factor -> call .)
+    PLUS            reduce using rule 100 (factor -> call .)
+    MINUS           reduce using rule 100 (factor -> call .)
+    OR              reduce using rule 100 (factor -> call .)
+    SEMICOLON       reduce using rule 100 (factor -> call .)
+    THEN            reduce using rule 100 (factor -> call .)
+    DO              reduce using rule 100 (factor -> call .)
+    RPAREN          reduce using rule 100 (factor -> call .)
+    END             reduce using rule 100 (factor -> call .)
+    UNTIL           reduce using rule 100 (factor -> call .)
+    ELSE            reduce using rule 100 (factor -> call .)
+    RBRACKET        reduce using rule 100 (factor -> call .)
+    COMMA           reduce using rule 100 (factor -> call .)
+    TO              reduce using rule 100 (factor -> call .)
+    DOWNTO          reduce using rule 100 (factor -> call .)
+    RANGE           reduce using rule 100 (factor -> call .)
+    STEP            reduce using rule 100 (factor -> call .)
+    LBRACKET        shift and go to state 110
+
+
+state 95
+
+    (101) factor -> NUM_INT .
+
+    TIMES           reduce using rule 101 (factor -> NUM_INT .)
+    DIVIDE          reduce using rule 101 (factor -> NUM_INT .)
+    DIV             reduce using rule 101 (factor -> NUM_INT .)
+    MOD             reduce using rule 101 (factor -> NUM_INT .)
+    AND             reduce using rule 101 (factor -> NUM_INT .)
+    EQ              reduce using rule 101 (factor -> NUM_INT .)
+    NE              reduce using rule 101 (factor -> NUM_INT .)
+    LT              reduce using rule 101 (factor -> NUM_INT .)
+    LE              reduce using rule 101 (factor -> NUM_INT .)
+    GT              reduce using rule 101 (factor -> NUM_INT .)
+    GE              reduce using rule 101 (factor -> NUM_INT .)
+    PLUS            reduce using rule 101 (factor -> NUM_INT .)
+    MINUS           reduce using rule 101 (factor -> NUM_INT .)
+    OR              reduce using rule 101 (factor -> NUM_INT .)
+    SEMICOLON       reduce using rule 101 (factor -> NUM_INT .)
+    THEN            reduce using rule 101 (factor -> NUM_INT .)
+    DO              reduce using rule 101 (factor -> NUM_INT .)
+    RPAREN          reduce using rule 101 (factor -> NUM_INT .)
+    END             reduce using rule 101 (factor -> NUM_INT .)
+    UNTIL           reduce using rule 101 (factor -> NUM_INT .)
+    ELSE            reduce using rule 101 (factor -> NUM_INT .)
+    RBRACKET        reduce using rule 101 (factor -> NUM_INT .)
+    COMMA           reduce using rule 101 (factor -> NUM_INT .)
+    TO              reduce using rule 101 (factor -> NUM_INT .)
+    DOWNTO          reduce using rule 101 (factor -> NUM_INT .)
+    RANGE           reduce using rule 101 (factor -> NUM_INT .)
+    STEP            reduce using rule 101 (factor -> NUM_INT .)
+
+
+state 96
+
+    (102) factor -> NUM_REAL .
+
+    TIMES           reduce using rule 102 (factor -> NUM_REAL .)
+    DIVIDE          reduce using rule 102 (factor -> NUM_REAL .)
+    DIV             reduce using rule 102 (factor -> NUM_REAL .)
+    MOD             reduce using rule 102 (factor -> NUM_REAL .)
+    AND             reduce using rule 102 (factor -> NUM_REAL .)
+    EQ              reduce using rule 102 (factor -> NUM_REAL .)
+    NE              reduce using rule 102 (factor -> NUM_REAL .)
+    LT              reduce using rule 102 (factor -> NUM_REAL .)
+    LE              reduce using rule 102 (factor -> NUM_REAL .)
+    GT              reduce using rule 102 (factor -> NUM_REAL .)
+    GE              reduce using rule 102 (factor -> NUM_REAL .)
+    PLUS            reduce using rule 102 (factor -> NUM_REAL .)
+    MINUS           reduce using rule 102 (factor -> NUM_REAL .)
+    OR              reduce using rule 102 (factor -> NUM_REAL .)
+    SEMICOLON       reduce using rule 102 (factor -> NUM_REAL .)
+    THEN            reduce using rule 102 (factor -> NUM_REAL .)
+    DO              reduce using rule 102 (factor -> NUM_REAL .)
+    RPAREN          reduce using rule 102 (factor -> NUM_REAL .)
+    END             reduce using rule 102 (factor -> NUM_REAL .)
+    UNTIL           reduce using rule 102 (factor -> NUM_REAL .)
+    ELSE            reduce using rule 102 (factor -> NUM_REAL .)
+    RBRACKET        reduce using rule 102 (factor -> NUM_REAL .)
+    COMMA           reduce using rule 102 (factor -> NUM_REAL .)
+    TO              reduce using rule 102 (factor -> NUM_REAL .)
+    DOWNTO          reduce using rule 102 (factor -> NUM_REAL .)
+    RANGE           reduce using rule 102 (factor -> NUM_REAL .)
+    STEP            reduce using rule 102 (factor -> NUM_REAL .)
+
+
+state 97
+
+    (103) factor -> CHAR_LITERAL .
+
+    TIMES           reduce using rule 103 (factor -> CHAR_LITERAL .)
+    DIVIDE          reduce using rule 103 (factor -> CHAR_LITERAL .)
+    DIV             reduce using rule 103 (factor -> CHAR_LITERAL .)
+    MOD             reduce using rule 103 (factor -> CHAR_LITERAL .)
+    AND             reduce using rule 103 (factor -> CHAR_LITERAL .)
+    EQ              reduce using rule 103 (factor -> CHAR_LITERAL .)
+    NE              reduce using rule 103 (factor -> CHAR_LITERAL .)
+    LT              reduce using rule 103 (factor -> CHAR_LITERAL .)
+    LE              reduce using rule 103 (factor -> CHAR_LITERAL .)
+    GT              reduce using rule 103 (factor -> CHAR_LITERAL .)
+    GE              reduce using rule 103 (factor -> CHAR_LITERAL .)
+    PLUS            reduce using rule 103 (factor -> CHAR_LITERAL .)
+    MINUS           reduce using rule 103 (factor -> CHAR_LITERAL .)
+    OR              reduce using rule 103 (factor -> CHAR_LITERAL .)
+    SEMICOLON       reduce using rule 103 (factor -> CHAR_LITERAL .)
+    THEN            reduce using rule 103 (factor -> CHAR_LITERAL .)
+    DO              reduce using rule 103 (factor -> CHAR_LITERAL .)
+    RPAREN          reduce using rule 103 (factor -> CHAR_LITERAL .)
+    END             reduce using rule 103 (factor -> CHAR_LITERAL .)
+    UNTIL           reduce using rule 103 (factor -> CHAR_LITERAL .)
+    ELSE            reduce using rule 103 (factor -> CHAR_LITERAL .)
+    RBRACKET        reduce using rule 103 (factor -> CHAR_LITERAL .)
+    COMMA           reduce using rule 103 (factor -> CHAR_LITERAL .)
+    TO              reduce using rule 103 (factor -> CHAR_LITERAL .)
+    DOWNTO          reduce using rule 103 (factor -> CHAR_LITERAL .)
+    RANGE           reduce using rule 103 (factor -> CHAR_LITERAL .)
+    STEP            reduce using rule 103 (factor -> CHAR_LITERAL .)
+
+
+state 98
+
+    (104) factor -> STRING_LITERAL .
+
+    TIMES           reduce using rule 104 (factor -> STRING_LITERAL .)
+    DIVIDE          reduce using rule 104 (factor -> STRING_LITERAL .)
+    DIV             reduce using rule 104 (factor -> STRING_LITERAL .)
+    MOD             reduce using rule 104 (factor -> STRING_LITERAL .)
+    AND             reduce using rule 104 (factor -> STRING_LITERAL .)
+    EQ              reduce using rule 104 (factor -> STRING_LITERAL .)
+    NE              reduce using rule 104 (factor -> STRING_LITERAL .)
+    LT              reduce using rule 104 (factor -> STRING_LITERAL .)
+    LE              reduce using rule 104 (factor -> STRING_LITERAL .)
+    GT              reduce using rule 104 (factor -> STRING_LITERAL .)
+    GE              reduce using rule 104 (factor -> STRING_LITERAL .)
+    PLUS            reduce using rule 104 (factor -> STRING_LITERAL .)
+    MINUS           reduce using rule 104 (factor -> STRING_LITERAL .)
+    OR              reduce using rule 104 (factor -> STRING_LITERAL .)
+    SEMICOLON       reduce using rule 104 (factor -> STRING_LITERAL .)
+    THEN            reduce using rule 104 (factor -> STRING_LITERAL .)
+    DO              reduce using rule 104 (factor -> STRING_LITERAL .)
+    RPAREN          reduce using rule 104 (factor -> STRING_LITERAL .)
+    END             reduce using rule 104 (factor -> STRING_LITERAL .)
+    UNTIL           reduce using rule 104 (factor -> STRING_LITERAL .)
+    ELSE            reduce using rule 104 (factor -> STRING_LITERAL .)
+    RBRACKET        reduce using rule 104 (factor -> STRING_LITERAL .)
+    COMMA           reduce using rule 104 (factor -> STRING_LITERAL .)
+    TO              reduce using rule 104 (factor -> STRING_LITERAL .)
+    DOWNTO          reduce using rule 104 (factor -> STRING_LITERAL .)
+    RANGE           reduce using rule 104 (factor -> STRING_LITERAL .)
+    STEP            reduce using rule 104 (factor -> STRING_LITERAL .)
+
+
+state 99
+
+    (105) factor -> LPAREN . expr RPAREN
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    expr                           shift and go to state 154
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 100
+
+    (106) factor -> PLUS . factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    factor                         shift and go to state 155
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 101
+
+    (107) factor -> MINUS . factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    factor                         shift and go to state 156
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 102
+
+    (108) factor -> NOT . factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    factor                         shift and go to state 157
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 103
+
+    (31) id_list -> id_list COMMA ID .
+
+    RPAREN          reduce using rule 31 (id_list -> id_list COMMA ID .)
+    COMMA           reduce using rule 31 (id_list -> id_list COMMA ID .)
+    COLON           reduce using rule 31 (id_list -> id_list COMMA ID .)
+
+
+state 104
+
+    (56) block -> block_open stmt_list END .
+
+    DOT             reduce using rule 56 (block -> block_open stmt_list END .)
+    SEMICOLON       reduce using rule 56 (block -> block_open stmt_list END .)
+    END             reduce using rule 56 (block -> block_open stmt_list END .)
+    UNTIL           reduce using rule 56 (block -> block_open stmt_list END .)
+    ELSE            reduce using rule 56 (block -> block_open stmt_list END .)
+
+
+state 105
+
+    (58) stmt_list -> stmt_list SEMICOLON . stmt
+    (60) stmt_list -> stmt_list SEMICOLON . error SEMICOLON stmt
+    (61) stmt -> . assign_stmt
+    (62) stmt -> . call_stmt
+    (63) stmt -> . if_stmt
+    (64) stmt -> . while_stmt
+    (65) stmt -> . for_stmt
+    (66) stmt -> . repeat_stmt
+    (67) stmt -> . write_stmt
+    (68) stmt -> . block
+    (69) stmt -> . empty
+    (74) assign_stmt -> . designator ASSIGN expr
+    (76) call_stmt -> . call
+    (77) call_stmt -> . designator
+    (78) if_stmt -> . IF expr THEN stmt
+    (79) if_stmt -> . IF expr THEN stmt ELSE stmt
+    (80) while_stmt -> . WHILE expr DO stmt
+    (82) for_stmt -> . for_header stmt
+    (87) repeat_stmt -> . REPEAT stmt_list UNTIL expr
+    (88) write_stmt -> . WRITELN LPAREN expr_list RPAREN
+    (56) block -> . block_open stmt_list END
+    (70) empty -> .
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+    (81) for_header -> . FOR designator ASSIGN expr direction expr step_spec DO
+    (55) block_open -> . BEGIN
+
+    error           shift and go to state 159
+    IF              shift and go to state 69
+    WHILE           shift and go to state 70
+    REPEAT          shift and go to state 72
+    WRITELN         shift and go to state 73
+    END             reduce using rule 70 (empty -> .)
+    SEMICOLON       reduce using rule 70 (empty -> .)
+    UNTIL           reduce using rule 70 (empty -> .)
+    ID              shift and go to state 74
+    FOR             shift and go to state 75
+    BEGIN           shift and go to state 38
+
+    stmt                           shift and go to state 158
+    assign_stmt                    shift and go to state 58
+    call_stmt                      shift and go to state 59
+    if_stmt                        shift and go to state 60
+    while_stmt                     shift and go to state 61
+    for_stmt                       shift and go to state 62
+    repeat_stmt                    shift and go to state 63
+    write_stmt                     shift and go to state 64
+    block                          shift and go to state 65
+    empty                          shift and go to state 66
+    designator                     shift and go to state 67
+    call                           shift and go to state 68
+    for_header                     shift and go to state 71
+    block_open                     shift and go to state 36
+
+state 106
+
+    (59) stmt_list -> error SEMICOLON . stmt
+    (61) stmt -> . assign_stmt
+    (62) stmt -> . call_stmt
+    (63) stmt -> . if_stmt
+    (64) stmt -> . while_stmt
+    (65) stmt -> . for_stmt
+    (66) stmt -> . repeat_stmt
+    (67) stmt -> . write_stmt
+    (68) stmt -> . block
+    (69) stmt -> . empty
+    (74) assign_stmt -> . designator ASSIGN expr
+    (76) call_stmt -> . call
+    (77) call_stmt -> . designator
+    (78) if_stmt -> . IF expr THEN stmt
+    (79) if_stmt -> . IF expr THEN stmt ELSE stmt
+    (80) while_stmt -> . WHILE expr DO stmt
+    (82) for_stmt -> . for_header stmt
+    (87) repeat_stmt -> . REPEAT stmt_list UNTIL expr
+    (88) write_stmt -> . WRITELN LPAREN expr_list RPAREN
+    (56) block -> . block_open stmt_list END
+    (70) empty -> .
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+    (81) for_header -> . FOR designator ASSIGN expr direction expr step_spec DO
+    (55) block_open -> . BEGIN
+
+    IF              shift and go to state 69
+    WHILE           shift and go to state 70
+    REPEAT          shift and go to state 72
+    WRITELN         shift and go to state 73
+    END             reduce using rule 70 (empty -> .)
+    SEMICOLON       reduce using rule 70 (empty -> .)
+    UNTIL           reduce using rule 70 (empty -> .)
+    ID              shift and go to state 74
+    FOR             shift and go to state 75
+    BEGIN           shift and go to state 38
+
+    stmt                           shift and go to state 160
+    assign_stmt                    shift and go to state 58
+    call_stmt                      shift and go to state 59
+    if_stmt                        shift and go to state 60
+    while_stmt                     shift and go to state 61
+    for_stmt                       shift and go to state 62
+    repeat_stmt                    shift and go to state 63
+    write_stmt                     shift and go to state 64
+    block                          shift and go to state 65
+    empty                          shift and go to state 66
+    designator                     shift and go to state 67
+    call                           shift and go to state 68
+    for_header                     shift and go to state 71
+    block_open                     shift and go to state 36
+
+state 107
+
+    (74) assign_stmt -> designator ASSIGN . expr
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    designator                     shift and go to state 93
+    expr                           shift and go to state 161
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    call                           shift and go to state 94
+
+state 108
+
+    (72) designator -> designator LBRACKET . expr_list RBRACKET
+    (89) expr_list -> . expr
+    (90) expr_list -> . expr_list COMMA expr
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    designator                     shift and go to state 93
+    expr_list                      shift and go to state 162
+    expr                           shift and go to state 163
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    call                           shift and go to state 94
+
+state 109
+
+    (75) call -> designator LPAREN . arguments RPAREN
+    (91) arguments -> . expr_list
+    (92) arguments -> . empty
+    (89) expr_list -> . expr
+    (90) expr_list -> . expr_list COMMA expr
+    (70) empty -> .
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    RPAREN          reduce using rule 70 (empty -> .)
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    designator                     shift and go to state 93
+    arguments                      shift and go to state 164
+    expr_list                      shift and go to state 165
+    empty                          shift and go to state 166
+    expr                           shift and go to state 163
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    call                           shift and go to state 94
+
+state 110
+
+    (73) designator -> call LBRACKET . expr_list RBRACKET
+    (89) expr_list -> . expr
+    (90) expr_list -> . expr_list COMMA expr
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    call                           shift and go to state 94
+    expr_list                      shift and go to state 167
+    expr                           shift and go to state 163
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+
+state 111
+
+    (78) if_stmt -> IF expr . THEN stmt
+    (79) if_stmt -> IF expr . THEN stmt ELSE stmt
+
+    THEN            shift and go to state 168
+
+
+state 112
+
+    (80) while_stmt -> WHILE expr . DO stmt
+
+    DO              shift and go to state 169
+
+
+state 113
+
+    (82) for_stmt -> for_header stmt .
+
+    END             reduce using rule 82 (for_stmt -> for_header stmt .)
+    SEMICOLON       reduce using rule 82 (for_stmt -> for_header stmt .)
+    UNTIL           reduce using rule 82 (for_stmt -> for_header stmt .)
+    ELSE            reduce using rule 82 (for_stmt -> for_header stmt .)
+
+
+state 114
+
+    (87) repeat_stmt -> REPEAT stmt_list . UNTIL expr
+    (58) stmt_list -> stmt_list . SEMICOLON stmt
+    (60) stmt_list -> stmt_list . SEMICOLON error SEMICOLON stmt
+
+    UNTIL           shift and go to state 170
+    SEMICOLON       shift and go to state 105
+
+
+state 115
+
+    (88) write_stmt -> WRITELN LPAREN . expr_list RPAREN
+    (89) expr_list -> . expr
+    (90) expr_list -> . expr_list COMMA expr
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    expr_list                      shift and go to state 171
+    expr                           shift and go to state 163
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 116
+
+    (81) for_header -> FOR designator . ASSIGN expr direction expr step_spec DO
+    (72) designator -> designator . LBRACKET expr_list RBRACKET
+    (75) call -> designator . LPAREN arguments RPAREN
+
+    ASSIGN          shift and go to state 172
+    LBRACKET        shift and go to state 108
+    LPAREN          shift and go to state 109
+
+
+state 117
+
+    (73) designator -> call . LBRACKET expr_list RBRACKET
+
+    LBRACKET        shift and go to state 110
+
+
+state 118
+
+    (54) callable_decl -> callable_header body SEMICOLON .
+
+    BEGIN           reduce using rule 54 (callable_decl -> callable_header body SEMICOLON .)
+    FUNCTION        reduce using rule 54 (callable_decl -> callable_header body SEMICOLON .)
+    PROCEDURE       reduce using rule 54 (callable_decl -> callable_header body SEMICOLON .)
+
+
+state 119
+
+    (43) callable_header -> callable_start formal_parameters result_spec . SEMICOLON
+
+    SEMICOLON       shift and go to state 173
+
+
+state 120
+
+    (44) result_spec -> COLON . type
+    (32) type -> . INTEGER
+    (33) type -> . REAL
+    (34) type -> . ID
+    (35) type -> . ARRAY LBRACKET bounds RBRACKET OF type
+
+    INTEGER         shift and go to state 133
+    REAL            shift and go to state 134
+    ID              shift and go to state 131
+    ARRAY           shift and go to state 135
+
+    type                           shift and go to state 174
+
+state 121
+
+    (45) result_spec -> empty .
+
+    SEMICOLON       reduce using rule 45 (result_spec -> empty .)
+
+
+state 122
+
+    (46) formal_parameters -> LPAREN parameter_groups . RPAREN
+    (50) parameter_groups -> parameter_groups . SEMICOLON parameter_group
+
+    RPAREN          shift and go to state 175
+    SEMICOLON       shift and go to state 176
+
+
+state 123
+
+    (47) formal_parameters -> LPAREN RPAREN .
+
+    COLON           reduce using rule 47 (formal_parameters -> LPAREN RPAREN .)
+    SEMICOLON       reduce using rule 47 (formal_parameters -> LPAREN RPAREN .)
+
+
+state 124
+
+    (49) parameter_groups -> parameter_group .
+
+    RPAREN          reduce using rule 49 (parameter_groups -> parameter_group .)
+    SEMICOLON       reduce using rule 49 (parameter_groups -> parameter_group .)
+
+
+state 125
+
+    (51) parameter_group -> parameter_mode . id_list COLON type
+    (30) id_list -> . ID
+    (31) id_list -> . id_list COMMA ID
+
+    ID              shift and go to state 33
+
+    id_list                        shift and go to state 177
+
+state 126
+
+    (52) parameter_mode -> VAR .
+
+    ID              reduce using rule 52 (parameter_mode -> VAR .)
+
+
+state 127
+
+    (53) parameter_mode -> empty .
+
+    ID              reduce using rule 53 (parameter_mode -> empty .)
+
+
+state 128
+
+    (25) decl_group_list -> decl_group_list decl_group .
+
+    error           reduce using rule 25 (decl_group_list -> decl_group_list decl_group .)
+    ID              reduce using rule 25 (decl_group_list -> decl_group_list decl_group .)
+    BEGIN           reduce using rule 25 (decl_group_list -> decl_group_list decl_group .)
+    FUNCTION        reduce using rule 25 (decl_group_list -> decl_group_list decl_group .)
+    PROCEDURE       reduce using rule 25 (decl_group_list -> decl_group_list decl_group .)
+
+
+state 129
+
+    (26) decl_group -> id_list COLON . type SEMICOLON
+    (32) type -> . INTEGER
+    (33) type -> . REAL
+    (34) type -> . ID
+    (35) type -> . ARRAY LBRACKET bounds RBRACKET OF type
+
+    INTEGER         shift and go to state 133
+    REAL            shift and go to state 134
+    ID              shift and go to state 131
+    ARRAY           shift and go to state 135
+
+    type                           shift and go to state 178
+
+state 130
+
+    (27) decl_group -> error SEMICOLON .
+
+    error           reduce using rule 27 (decl_group -> error SEMICOLON .)
+    ID              reduce using rule 27 (decl_group -> error SEMICOLON .)
+    BEGIN           reduce using rule 27 (decl_group -> error SEMICOLON .)
+    FUNCTION        reduce using rule 27 (decl_group -> error SEMICOLON .)
+    PROCEDURE       reduce using rule 27 (decl_group -> error SEMICOLON .)
+
+
+state 131
+
+    (34) type -> ID .
+
+    SEMICOLON       reduce using rule 34 (type -> ID .)
+    RPAREN          reduce using rule 34 (type -> ID .)
+
+
+state 132
+
+    (21) type_group -> ID EQ type . SEMICOLON
+
+    SEMICOLON       shift and go to state 179
+
+
+state 133
+
+    (32) type -> INTEGER .
+
+    SEMICOLON       reduce using rule 32 (type -> INTEGER .)
+    RPAREN          reduce using rule 32 (type -> INTEGER .)
+
+
+state 134
+
+    (33) type -> REAL .
+
+    SEMICOLON       reduce using rule 33 (type -> REAL .)
+    RPAREN          reduce using rule 33 (type -> REAL .)
+
+
+state 135
+
+    (35) type -> ARRAY . LBRACKET bounds RBRACKET OF type
+
+    LBRACKET        shift and go to state 180
+
+
+state 136
+
+    (16) const_group -> ID EQ expr SEMICOLON .
+
+    ID              reduce using rule 16 (const_group -> ID EQ expr SEMICOLON .)
+    error           reduce using rule 16 (const_group -> ID EQ expr SEMICOLON .)
+    TYPE            reduce using rule 16 (const_group -> ID EQ expr SEMICOLON .)
+    VAR             reduce using rule 16 (const_group -> ID EQ expr SEMICOLON .)
+    BEGIN           reduce using rule 16 (const_group -> ID EQ expr SEMICOLON .)
+    FUNCTION        reduce using rule 16 (const_group -> ID EQ expr SEMICOLON .)
+    PROCEDURE       reduce using rule 16 (const_group -> ID EQ expr SEMICOLON .)
+
+
+state 137
+
+    (94) expr -> simple_expr relop . simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    simple_expr                    shift and go to state 181
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 138
+
+    (96) simple_expr -> simple_expr addop . term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    term                           shift and go to state 182
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 139
+
+    (109) relop -> EQ .
+
+    NUM_INT         reduce using rule 109 (relop -> EQ .)
+    NUM_REAL        reduce using rule 109 (relop -> EQ .)
+    CHAR_LITERAL    reduce using rule 109 (relop -> EQ .)
+    STRING_LITERAL  reduce using rule 109 (relop -> EQ .)
+    LPAREN          reduce using rule 109 (relop -> EQ .)
+    PLUS            reduce using rule 109 (relop -> EQ .)
+    MINUS           reduce using rule 109 (relop -> EQ .)
+    NOT             reduce using rule 109 (relop -> EQ .)
+    ID              reduce using rule 109 (relop -> EQ .)
+
+
+state 140
+
+    (110) relop -> NE .
+
+    NUM_INT         reduce using rule 110 (relop -> NE .)
+    NUM_REAL        reduce using rule 110 (relop -> NE .)
+    CHAR_LITERAL    reduce using rule 110 (relop -> NE .)
+    STRING_LITERAL  reduce using rule 110 (relop -> NE .)
+    LPAREN          reduce using rule 110 (relop -> NE .)
+    PLUS            reduce using rule 110 (relop -> NE .)
+    MINUS           reduce using rule 110 (relop -> NE .)
+    NOT             reduce using rule 110 (relop -> NE .)
+    ID              reduce using rule 110 (relop -> NE .)
+
+
+state 141
+
+    (111) relop -> LT .
+
+    NUM_INT         reduce using rule 111 (relop -> LT .)
+    NUM_REAL        reduce using rule 111 (relop -> LT .)
+    CHAR_LITERAL    reduce using rule 111 (relop -> LT .)
+    STRING_LITERAL  reduce using rule 111 (relop -> LT .)
+    LPAREN          reduce using rule 111 (relop -> LT .)
+    PLUS            reduce using rule 111 (relop -> LT .)
+    MINUS           reduce using rule 111 (relop -> LT .)
+    NOT             reduce using rule 111 (relop -> LT .)
+    ID              reduce using rule 111 (relop -> LT .)
+
+
+state 142
+
+    (112) relop -> LE .
+
+    NUM_INT         reduce using rule 112 (relop -> LE .)
+    NUM_REAL        reduce using rule 112 (relop -> LE .)
+    CHAR_LITERAL    reduce using rule 112 (relop -> LE .)
+    STRING_LITERAL  reduce using rule 112 (relop -> LE .)
+    LPAREN          reduce using rule 112 (relop -> LE .)
+    PLUS            reduce using rule 112 (relop -> LE .)
+    MINUS           reduce using rule 112 (relop -> LE .)
+    NOT             reduce using rule 112 (relop -> LE .)
+    ID              reduce using rule 112 (relop -> LE .)
+
+
+state 143
+
+    (113) relop -> GT .
+
+    NUM_INT         reduce using rule 113 (relop -> GT .)
+    NUM_REAL        reduce using rule 113 (relop -> GT .)
+    CHAR_LITERAL    reduce using rule 113 (relop -> GT .)
+    STRING_LITERAL  reduce using rule 113 (relop -> GT .)
+    LPAREN          reduce using rule 113 (relop -> GT .)
+    PLUS            reduce using rule 113 (relop -> GT .)
+    MINUS           reduce using rule 113 (relop -> GT .)
+    NOT             reduce using rule 113 (relop -> GT .)
+    ID              reduce using rule 113 (relop -> GT .)
+
+
+state 144
+
+    (114) relop -> GE .
+
+    NUM_INT         reduce using rule 114 (relop -> GE .)
+    NUM_REAL        reduce using rule 114 (relop -> GE .)
+    CHAR_LITERAL    reduce using rule 114 (relop -> GE .)
+    STRING_LITERAL  reduce using rule 114 (relop -> GE .)
+    LPAREN          reduce using rule 114 (relop -> GE .)
+    PLUS            reduce using rule 114 (relop -> GE .)
+    MINUS           reduce using rule 114 (relop -> GE .)
+    NOT             reduce using rule 114 (relop -> GE .)
+    ID              reduce using rule 114 (relop -> GE .)
+
+
+state 145
+
+    (115) addop -> PLUS .
+
+    NUM_INT         reduce using rule 115 (addop -> PLUS .)
+    NUM_REAL        reduce using rule 115 (addop -> PLUS .)
+    CHAR_LITERAL    reduce using rule 115 (addop -> PLUS .)
+    STRING_LITERAL  reduce using rule 115 (addop -> PLUS .)
+    LPAREN          reduce using rule 115 (addop -> PLUS .)
+    PLUS            reduce using rule 115 (addop -> PLUS .)
+    MINUS           reduce using rule 115 (addop -> PLUS .)
+    NOT             reduce using rule 115 (addop -> PLUS .)
+    ID              reduce using rule 115 (addop -> PLUS .)
+
+
+state 146
+
+    (116) addop -> MINUS .
+
+    NUM_INT         reduce using rule 116 (addop -> MINUS .)
+    NUM_REAL        reduce using rule 116 (addop -> MINUS .)
+    CHAR_LITERAL    reduce using rule 116 (addop -> MINUS .)
+    STRING_LITERAL  reduce using rule 116 (addop -> MINUS .)
+    LPAREN          reduce using rule 116 (addop -> MINUS .)
+    PLUS            reduce using rule 116 (addop -> MINUS .)
+    MINUS           reduce using rule 116 (addop -> MINUS .)
+    NOT             reduce using rule 116 (addop -> MINUS .)
+    ID              reduce using rule 116 (addop -> MINUS .)
+
+
+state 147
+
+    (117) addop -> OR .
+
+    NUM_INT         reduce using rule 117 (addop -> OR .)
+    NUM_REAL        reduce using rule 117 (addop -> OR .)
+    CHAR_LITERAL    reduce using rule 117 (addop -> OR .)
+    STRING_LITERAL  reduce using rule 117 (addop -> OR .)
+    LPAREN          reduce using rule 117 (addop -> OR .)
+    PLUS            reduce using rule 117 (addop -> OR .)
+    MINUS           reduce using rule 117 (addop -> OR .)
+    NOT             reduce using rule 117 (addop -> OR .)
+    ID              reduce using rule 117 (addop -> OR .)
+
+
+state 148
+
+    (98) term -> term mulop . factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    factor                         shift and go to state 183
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 149
+
+    (118) mulop -> TIMES .
+
+    NUM_INT         reduce using rule 118 (mulop -> TIMES .)
+    NUM_REAL        reduce using rule 118 (mulop -> TIMES .)
+    CHAR_LITERAL    reduce using rule 118 (mulop -> TIMES .)
+    STRING_LITERAL  reduce using rule 118 (mulop -> TIMES .)
+    LPAREN          reduce using rule 118 (mulop -> TIMES .)
+    PLUS            reduce using rule 118 (mulop -> TIMES .)
+    MINUS           reduce using rule 118 (mulop -> TIMES .)
+    NOT             reduce using rule 118 (mulop -> TIMES .)
+    ID              reduce using rule 118 (mulop -> TIMES .)
+
+
+state 150
+
+    (119) mulop -> DIVIDE .
+
+    NUM_INT         reduce using rule 119 (mulop -> DIVIDE .)
+    NUM_REAL        reduce using rule 119 (mulop -> DIVIDE .)
+    CHAR_LITERAL    reduce using rule 119 (mulop -> DIVIDE .)
+    STRING_LITERAL  reduce using rule 119 (mulop -> DIVIDE .)
+    LPAREN          reduce using rule 119 (mulop -> DIVIDE .)
+    PLUS            reduce using rule 119 (mulop -> DIVIDE .)
+    MINUS           reduce using rule 119 (mulop -> DIVIDE .)
+    NOT             reduce using rule 119 (mulop -> DIVIDE .)
+    ID              reduce using rule 119 (mulop -> DIVIDE .)
+
+
+state 151
+
+    (120) mulop -> DIV .
+
+    NUM_INT         reduce using rule 120 (mulop -> DIV .)
+    NUM_REAL        reduce using rule 120 (mulop -> DIV .)
+    CHAR_LITERAL    reduce using rule 120 (mulop -> DIV .)
+    STRING_LITERAL  reduce using rule 120 (mulop -> DIV .)
+    LPAREN          reduce using rule 120 (mulop -> DIV .)
+    PLUS            reduce using rule 120 (mulop -> DIV .)
+    MINUS           reduce using rule 120 (mulop -> DIV .)
+    NOT             reduce using rule 120 (mulop -> DIV .)
+    ID              reduce using rule 120 (mulop -> DIV .)
+
+
+state 152
+
+    (121) mulop -> MOD .
+
+    NUM_INT         reduce using rule 121 (mulop -> MOD .)
+    NUM_REAL        reduce using rule 121 (mulop -> MOD .)
+    CHAR_LITERAL    reduce using rule 121 (mulop -> MOD .)
+    STRING_LITERAL  reduce using rule 121 (mulop -> MOD .)
+    LPAREN          reduce using rule 121 (mulop -> MOD .)
+    PLUS            reduce using rule 121 (mulop -> MOD .)
+    MINUS           reduce using rule 121 (mulop -> MOD .)
+    NOT             reduce using rule 121 (mulop -> MOD .)
+    ID              reduce using rule 121 (mulop -> MOD .)
+
+
+state 153
+
+    (122) mulop -> AND .
+
+    NUM_INT         reduce using rule 122 (mulop -> AND .)
+    NUM_REAL        reduce using rule 122 (mulop -> AND .)
+    CHAR_LITERAL    reduce using rule 122 (mulop -> AND .)
+    STRING_LITERAL  reduce using rule 122 (mulop -> AND .)
+    LPAREN          reduce using rule 122 (mulop -> AND .)
+    PLUS            reduce using rule 122 (mulop -> AND .)
+    MINUS           reduce using rule 122 (mulop -> AND .)
+    NOT             reduce using rule 122 (mulop -> AND .)
+    ID              reduce using rule 122 (mulop -> AND .)
+
+
+state 154
+
+    (105) factor -> LPAREN expr . RPAREN
+
+    RPAREN          shift and go to state 184
+
+
+state 155
+
+    (106) factor -> PLUS factor .
+
+    TIMES           reduce using rule 106 (factor -> PLUS factor .)
+    DIVIDE          reduce using rule 106 (factor -> PLUS factor .)
+    DIV             reduce using rule 106 (factor -> PLUS factor .)
+    MOD             reduce using rule 106 (factor -> PLUS factor .)
+    AND             reduce using rule 106 (factor -> PLUS factor .)
+    EQ              reduce using rule 106 (factor -> PLUS factor .)
+    NE              reduce using rule 106 (factor -> PLUS factor .)
+    LT              reduce using rule 106 (factor -> PLUS factor .)
+    LE              reduce using rule 106 (factor -> PLUS factor .)
+    GT              reduce using rule 106 (factor -> PLUS factor .)
+    GE              reduce using rule 106 (factor -> PLUS factor .)
+    PLUS            reduce using rule 106 (factor -> PLUS factor .)
+    MINUS           reduce using rule 106 (factor -> PLUS factor .)
+    OR              reduce using rule 106 (factor -> PLUS factor .)
+    SEMICOLON       reduce using rule 106 (factor -> PLUS factor .)
+    THEN            reduce using rule 106 (factor -> PLUS factor .)
+    DO              reduce using rule 106 (factor -> PLUS factor .)
+    RPAREN          reduce using rule 106 (factor -> PLUS factor .)
+    END             reduce using rule 106 (factor -> PLUS factor .)
+    UNTIL           reduce using rule 106 (factor -> PLUS factor .)
+    ELSE            reduce using rule 106 (factor -> PLUS factor .)
+    RBRACKET        reduce using rule 106 (factor -> PLUS factor .)
+    COMMA           reduce using rule 106 (factor -> PLUS factor .)
+    TO              reduce using rule 106 (factor -> PLUS factor .)
+    DOWNTO          reduce using rule 106 (factor -> PLUS factor .)
+    RANGE           reduce using rule 106 (factor -> PLUS factor .)
+    STEP            reduce using rule 106 (factor -> PLUS factor .)
+
+
+state 156
+
+    (107) factor -> MINUS factor .
+
+    TIMES           reduce using rule 107 (factor -> MINUS factor .)
+    DIVIDE          reduce using rule 107 (factor -> MINUS factor .)
+    DIV             reduce using rule 107 (factor -> MINUS factor .)
+    MOD             reduce using rule 107 (factor -> MINUS factor .)
+    AND             reduce using rule 107 (factor -> MINUS factor .)
+    EQ              reduce using rule 107 (factor -> MINUS factor .)
+    NE              reduce using rule 107 (factor -> MINUS factor .)
+    LT              reduce using rule 107 (factor -> MINUS factor .)
+    LE              reduce using rule 107 (factor -> MINUS factor .)
+    GT              reduce using rule 107 (factor -> MINUS factor .)
+    GE              reduce using rule 107 (factor -> MINUS factor .)
+    PLUS            reduce using rule 107 (factor -> MINUS factor .)
+    MINUS           reduce using rule 107 (factor -> MINUS factor .)
+    OR              reduce using rule 107 (factor -> MINUS factor .)
+    SEMICOLON       reduce using rule 107 (factor -> MINUS factor .)
+    THEN            reduce using rule 107 (factor -> MINUS factor .)
+    DO              reduce using rule 107 (factor -> MINUS factor .)
+    RPAREN          reduce using rule 107 (factor -> MINUS factor .)
+    END             reduce using rule 107 (factor -> MINUS factor .)
+    UNTIL           reduce using rule 107 (factor -> MINUS factor .)
+    ELSE            reduce using rule 107 (factor -> MINUS factor .)
+    RBRACKET        reduce using rule 107 (factor -> MINUS factor .)
+    COMMA           reduce using rule 107 (factor -> MINUS factor .)
+    TO              reduce using rule 107 (factor -> MINUS factor .)
+    DOWNTO          reduce using rule 107 (factor -> MINUS factor .)
+    RANGE           reduce using rule 107 (factor -> MINUS factor .)
+    STEP            reduce using rule 107 (factor -> MINUS factor .)
+
+
+state 157
+
+    (108) factor -> NOT factor .
+
+    TIMES           reduce using rule 108 (factor -> NOT factor .)
+    DIVIDE          reduce using rule 108 (factor -> NOT factor .)
+    DIV             reduce using rule 108 (factor -> NOT factor .)
+    MOD             reduce using rule 108 (factor -> NOT factor .)
+    AND             reduce using rule 108 (factor -> NOT factor .)
+    EQ              reduce using rule 108 (factor -> NOT factor .)
+    NE              reduce using rule 108 (factor -> NOT factor .)
+    LT              reduce using rule 108 (factor -> NOT factor .)
+    LE              reduce using rule 108 (factor -> NOT factor .)
+    GT              reduce using rule 108 (factor -> NOT factor .)
+    GE              reduce using rule 108 (factor -> NOT factor .)
+    PLUS            reduce using rule 108 (factor -> NOT factor .)
+    MINUS           reduce using rule 108 (factor -> NOT factor .)
+    OR              reduce using rule 108 (factor -> NOT factor .)
+    SEMICOLON       reduce using rule 108 (factor -> NOT factor .)
+    THEN            reduce using rule 108 (factor -> NOT factor .)
+    DO              reduce using rule 108 (factor -> NOT factor .)
+    RPAREN          reduce using rule 108 (factor -> NOT factor .)
+    END             reduce using rule 108 (factor -> NOT factor .)
+    UNTIL           reduce using rule 108 (factor -> NOT factor .)
+    ELSE            reduce using rule 108 (factor -> NOT factor .)
+    RBRACKET        reduce using rule 108 (factor -> NOT factor .)
+    COMMA           reduce using rule 108 (factor -> NOT factor .)
+    TO              reduce using rule 108 (factor -> NOT factor .)
+    DOWNTO          reduce using rule 108 (factor -> NOT factor .)
+    RANGE           reduce using rule 108 (factor -> NOT factor .)
+    STEP            reduce using rule 108 (factor -> NOT factor .)
+
+
+state 158
+
+    (58) stmt_list -> stmt_list SEMICOLON stmt .
+
+    END             reduce using rule 58 (stmt_list -> stmt_list SEMICOLON stmt .)
+    SEMICOLON       reduce using rule 58 (stmt_list -> stmt_list SEMICOLON stmt .)
+    UNTIL           reduce using rule 58 (stmt_list -> stmt_list SEMICOLON stmt .)
+
+
+state 159
+
+    (60) stmt_list -> stmt_list SEMICOLON error . SEMICOLON stmt
+
+    SEMICOLON       shift and go to state 185
+
+
+state 160
+
+    (59) stmt_list -> error SEMICOLON stmt .
+
+    END             reduce using rule 59 (stmt_list -> error SEMICOLON stmt .)
+    SEMICOLON       reduce using rule 59 (stmt_list -> error SEMICOLON stmt .)
+    UNTIL           reduce using rule 59 (stmt_list -> error SEMICOLON stmt .)
+
+
+state 161
+
+    (74) assign_stmt -> designator ASSIGN expr .
+
+    END             reduce using rule 74 (assign_stmt -> designator ASSIGN expr .)
+    SEMICOLON       reduce using rule 74 (assign_stmt -> designator ASSIGN expr .)
+    UNTIL           reduce using rule 74 (assign_stmt -> designator ASSIGN expr .)
+    ELSE            reduce using rule 74 (assign_stmt -> designator ASSIGN expr .)
+
+
+state 162
+
+    (72) designator -> designator LBRACKET expr_list . RBRACKET
+    (90) expr_list -> expr_list . COMMA expr
+
+    RBRACKET        shift and go to state 186
+    COMMA           shift and go to state 187
+
+
+state 163
+
+    (89) expr_list -> expr .
+
+    RBRACKET        reduce using rule 89 (expr_list -> expr .)
+    COMMA           reduce using rule 89 (expr_list -> expr .)
+    RPAREN          reduce using rule 89 (expr_list -> expr .)
+
+
+state 164
+
+    (75) call -> designator LPAREN arguments . RPAREN
+
+    RPAREN          shift and go to state 188
+
+
+state 165
+
+    (91) arguments -> expr_list .
+    (90) expr_list -> expr_list . COMMA expr
+
+    RPAREN          reduce using rule 91 (arguments -> expr_list .)
+    COMMA           shift and go to state 187
+
+
+state 166
+
+    (92) arguments -> empty .
+
+    RPAREN          reduce using rule 92 (arguments -> empty .)
+
+
+state 167
+
+    (73) designator -> call LBRACKET expr_list . RBRACKET
+    (90) expr_list -> expr_list . COMMA expr
+
+    RBRACKET        shift and go to state 189
+    COMMA           shift and go to state 187
+
+
+state 168
+
+    (78) if_stmt -> IF expr THEN . stmt
+    (79) if_stmt -> IF expr THEN . stmt ELSE stmt
+    (61) stmt -> . assign_stmt
+    (62) stmt -> . call_stmt
+    (63) stmt -> . if_stmt
+    (64) stmt -> . while_stmt
+    (65) stmt -> . for_stmt
+    (66) stmt -> . repeat_stmt
+    (67) stmt -> . write_stmt
+    (68) stmt -> . block
+    (69) stmt -> . empty
+    (74) assign_stmt -> . designator ASSIGN expr
+    (76) call_stmt -> . call
+    (77) call_stmt -> . designator
+    (78) if_stmt -> . IF expr THEN stmt
+    (79) if_stmt -> . IF expr THEN stmt ELSE stmt
+    (80) while_stmt -> . WHILE expr DO stmt
+    (82) for_stmt -> . for_header stmt
+    (87) repeat_stmt -> . REPEAT stmt_list UNTIL expr
+    (88) write_stmt -> . WRITELN LPAREN expr_list RPAREN
+    (56) block -> . block_open stmt_list END
+    (70) empty -> .
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+    (81) for_header -> . FOR designator ASSIGN expr direction expr step_spec DO
+    (55) block_open -> . BEGIN
+
+    IF              shift and go to state 69
+    WHILE           shift and go to state 70
+    REPEAT          shift and go to state 72
+    WRITELN         shift and go to state 73
+    END             reduce using rule 70 (empty -> .)
+    SEMICOLON       reduce using rule 70 (empty -> .)
+    UNTIL           reduce using rule 70 (empty -> .)
+    ELSE            reduce using rule 70 (empty -> .)
+    ID              shift and go to state 74
+    FOR             shift and go to state 75
+    BEGIN           shift and go to state 38
+
+    stmt                           shift and go to state 190
+    assign_stmt                    shift and go to state 58
+    call_stmt                      shift and go to state 59
+    if_stmt                        shift and go to state 60
+    while_stmt                     shift and go to state 61
+    for_stmt                       shift and go to state 62
+    repeat_stmt                    shift and go to state 63
+    write_stmt                     shift and go to state 64
+    block                          shift and go to state 65
+    empty                          shift and go to state 66
+    designator                     shift and go to state 67
+    call                           shift and go to state 68
+    for_header                     shift and go to state 71
+    block_open                     shift and go to state 36
+
+state 169
+
+    (80) while_stmt -> WHILE expr DO . stmt
+    (61) stmt -> . assign_stmt
+    (62) stmt -> . call_stmt
+    (63) stmt -> . if_stmt
+    (64) stmt -> . while_stmt
+    (65) stmt -> . for_stmt
+    (66) stmt -> . repeat_stmt
+    (67) stmt -> . write_stmt
+    (68) stmt -> . block
+    (69) stmt -> . empty
+    (74) assign_stmt -> . designator ASSIGN expr
+    (76) call_stmt -> . call
+    (77) call_stmt -> . designator
+    (78) if_stmt -> . IF expr THEN stmt
+    (79) if_stmt -> . IF expr THEN stmt ELSE stmt
+    (80) while_stmt -> . WHILE expr DO stmt
+    (82) for_stmt -> . for_header stmt
+    (87) repeat_stmt -> . REPEAT stmt_list UNTIL expr
+    (88) write_stmt -> . WRITELN LPAREN expr_list RPAREN
+    (56) block -> . block_open stmt_list END
+    (70) empty -> .
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+    (81) for_header -> . FOR designator ASSIGN expr direction expr step_spec DO
+    (55) block_open -> . BEGIN
+
+    IF              shift and go to state 69
+    WHILE           shift and go to state 70
+    REPEAT          shift and go to state 72
+    WRITELN         shift and go to state 73
+    END             reduce using rule 70 (empty -> .)
+    SEMICOLON       reduce using rule 70 (empty -> .)
+    UNTIL           reduce using rule 70 (empty -> .)
+    ELSE            reduce using rule 70 (empty -> .)
+    ID              shift and go to state 74
+    FOR             shift and go to state 75
+    BEGIN           shift and go to state 38
+
+    stmt                           shift and go to state 191
+    assign_stmt                    shift and go to state 58
+    call_stmt                      shift and go to state 59
+    if_stmt                        shift and go to state 60
+    while_stmt                     shift and go to state 61
+    for_stmt                       shift and go to state 62
+    repeat_stmt                    shift and go to state 63
+    write_stmt                     shift and go to state 64
+    block                          shift and go to state 65
+    empty                          shift and go to state 66
+    designator                     shift and go to state 67
+    call                           shift and go to state 68
+    for_header                     shift and go to state 71
+    block_open                     shift and go to state 36
+
+state 170
+
+    (87) repeat_stmt -> REPEAT stmt_list UNTIL . expr
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    expr                           shift and go to state 192
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 171
+
+    (88) write_stmt -> WRITELN LPAREN expr_list . RPAREN
+    (90) expr_list -> expr_list . COMMA expr
+
+    RPAREN          shift and go to state 193
+    COMMA           shift and go to state 187
+
+
+state 172
+
+    (81) for_header -> FOR designator ASSIGN . expr direction expr step_spec DO
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    designator                     shift and go to state 93
+    expr                           shift and go to state 194
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    call                           shift and go to state 94
+
+state 173
+
+    (43) callable_header -> callable_start formal_parameters result_spec SEMICOLON .
+
+    CONST           reduce using rule 43 (callable_header -> callable_start formal_parameters result_spec SEMICOLON .)
+    BEGIN           reduce using rule 43 (callable_header -> callable_start formal_parameters result_spec SEMICOLON .)
+    FUNCTION        reduce using rule 43 (callable_header -> callable_start formal_parameters result_spec SEMICOLON .)
+    PROCEDURE       reduce using rule 43 (callable_header -> callable_start formal_parameters result_spec SEMICOLON .)
+    TYPE            reduce using rule 43 (callable_header -> callable_start formal_parameters result_spec SEMICOLON .)
+    VAR             reduce using rule 43 (callable_header -> callable_start formal_parameters result_spec SEMICOLON .)
+
+
+state 174
+
+    (44) result_spec -> COLON type .
+
+    SEMICOLON       reduce using rule 44 (result_spec -> COLON type .)
+
+
+state 175
+
+    (46) formal_parameters -> LPAREN parameter_groups RPAREN .
+
+    COLON           reduce using rule 46 (formal_parameters -> LPAREN parameter_groups RPAREN .)
+    SEMICOLON       reduce using rule 46 (formal_parameters -> LPAREN parameter_groups RPAREN .)
+
+
+state 176
+
+    (50) parameter_groups -> parameter_groups SEMICOLON . parameter_group
+    (51) parameter_group -> . parameter_mode id_list COLON type
+    (52) parameter_mode -> . VAR
+    (53) parameter_mode -> . empty
+    (70) empty -> .
+
+    VAR             shift and go to state 126
+    ID              reduce using rule 70 (empty -> .)
+
+    parameter_group                shift and go to state 195
+    parameter_mode                 shift and go to state 125
+    empty                          shift and go to state 127
+
+state 177
+
+    (51) parameter_group -> parameter_mode id_list . COLON type
+    (31) id_list -> id_list . COMMA ID
+
+    COLON           shift and go to state 196
+    COMMA           shift and go to state 54
+
+
+state 178
+
+    (26) decl_group -> id_list COLON type . SEMICOLON
+
+    SEMICOLON       shift and go to state 197
+
+
+state 179
+
+    (21) type_group -> ID EQ type SEMICOLON .
+
+    ID              reduce using rule 21 (type_group -> ID EQ type SEMICOLON .)
+    error           reduce using rule 21 (type_group -> ID EQ type SEMICOLON .)
+    VAR             reduce using rule 21 (type_group -> ID EQ type SEMICOLON .)
+    BEGIN           reduce using rule 21 (type_group -> ID EQ type SEMICOLON .)
+    FUNCTION        reduce using rule 21 (type_group -> ID EQ type SEMICOLON .)
+    PROCEDURE       reduce using rule 21 (type_group -> ID EQ type SEMICOLON .)
+
+
+state 180
+
+    (35) type -> ARRAY LBRACKET . bounds RBRACKET OF type
+    (36) bounds -> . bound
+    (37) bounds -> . bounds COMMA bound
+    (38) bound -> . expr RANGE expr
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    bounds                         shift and go to state 198
+    bound                          shift and go to state 199
+    expr                           shift and go to state 200
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 181
+
+    (94) expr -> simple_expr relop simple_expr .
+    (96) simple_expr -> simple_expr . addop term
+    (115) addop -> . PLUS
+    (116) addop -> . MINUS
+    (117) addop -> . OR
+
+    SEMICOLON       reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    THEN            reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    DO              reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    RPAREN          reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    END             reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    UNTIL           reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    ELSE            reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    RBRACKET        reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    COMMA           reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    TO              reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    DOWNTO          reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    RANGE           reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    STEP            reduce using rule 94 (expr -> simple_expr relop simple_expr .)
+    PLUS            shift and go to state 145
+    MINUS           shift and go to state 146
+    OR              shift and go to state 147
+
+    addop                          shift and go to state 138
+
+state 182
+
+    (96) simple_expr -> simple_expr addop term .
+    (98) term -> term . mulop factor
+    (118) mulop -> . TIMES
+    (119) mulop -> . DIVIDE
+    (120) mulop -> . DIV
+    (121) mulop -> . MOD
+    (122) mulop -> . AND
+
+    EQ              reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    NE              reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    LT              reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    LE              reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    GT              reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    GE              reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    PLUS            reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    MINUS           reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    OR              reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    SEMICOLON       reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    THEN            reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    DO              reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    RPAREN          reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    END             reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    UNTIL           reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    ELSE            reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    RBRACKET        reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    COMMA           reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    TO              reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    DOWNTO          reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    RANGE           reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    STEP            reduce using rule 96 (simple_expr -> simple_expr addop term .)
+    TIMES           shift and go to state 149
+    DIVIDE          shift and go to state 150
+    DIV             shift and go to state 151
+    MOD             shift and go to state 152
+    AND             shift and go to state 153
+
+    mulop                          shift and go to state 148
+
+state 183
+
+    (98) term -> term mulop factor .
+
+    TIMES           reduce using rule 98 (term -> term mulop factor .)
+    DIVIDE          reduce using rule 98 (term -> term mulop factor .)
+    DIV             reduce using rule 98 (term -> term mulop factor .)
+    MOD             reduce using rule 98 (term -> term mulop factor .)
+    AND             reduce using rule 98 (term -> term mulop factor .)
+    EQ              reduce using rule 98 (term -> term mulop factor .)
+    NE              reduce using rule 98 (term -> term mulop factor .)
+    LT              reduce using rule 98 (term -> term mulop factor .)
+    LE              reduce using rule 98 (term -> term mulop factor .)
+    GT              reduce using rule 98 (term -> term mulop factor .)
+    GE              reduce using rule 98 (term -> term mulop factor .)
+    PLUS            reduce using rule 98 (term -> term mulop factor .)
+    MINUS           reduce using rule 98 (term -> term mulop factor .)
+    OR              reduce using rule 98 (term -> term mulop factor .)
+    SEMICOLON       reduce using rule 98 (term -> term mulop factor .)
+    THEN            reduce using rule 98 (term -> term mulop factor .)
+    DO              reduce using rule 98 (term -> term mulop factor .)
+    RPAREN          reduce using rule 98 (term -> term mulop factor .)
+    END             reduce using rule 98 (term -> term mulop factor .)
+    UNTIL           reduce using rule 98 (term -> term mulop factor .)
+    ELSE            reduce using rule 98 (term -> term mulop factor .)
+    RBRACKET        reduce using rule 98 (term -> term mulop factor .)
+    COMMA           reduce using rule 98 (term -> term mulop factor .)
+    TO              reduce using rule 98 (term -> term mulop factor .)
+    DOWNTO          reduce using rule 98 (term -> term mulop factor .)
+    RANGE           reduce using rule 98 (term -> term mulop factor .)
+    STEP            reduce using rule 98 (term -> term mulop factor .)
+
+
+state 184
+
+    (105) factor -> LPAREN expr RPAREN .
+
+    TIMES           reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    DIV             reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    MOD             reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    AND             reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    EQ              reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    NE              reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    LT              reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    LE              reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    GT              reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    GE              reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    PLUS            reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    MINUS           reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    OR              reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    SEMICOLON       reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    THEN            reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    DO              reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    END             reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    UNTIL           reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    ELSE            reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    RBRACKET        reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    COMMA           reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    TO              reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    DOWNTO          reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    RANGE           reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+    STEP            reduce using rule 105 (factor -> LPAREN expr RPAREN .)
+
+
+state 185
+
+    (60) stmt_list -> stmt_list SEMICOLON error SEMICOLON . stmt
+    (61) stmt -> . assign_stmt
+    (62) stmt -> . call_stmt
+    (63) stmt -> . if_stmt
+    (64) stmt -> . while_stmt
+    (65) stmt -> . for_stmt
+    (66) stmt -> . repeat_stmt
+    (67) stmt -> . write_stmt
+    (68) stmt -> . block
+    (69) stmt -> . empty
+    (74) assign_stmt -> . designator ASSIGN expr
+    (76) call_stmt -> . call
+    (77) call_stmt -> . designator
+    (78) if_stmt -> . IF expr THEN stmt
+    (79) if_stmt -> . IF expr THEN stmt ELSE stmt
+    (80) while_stmt -> . WHILE expr DO stmt
+    (82) for_stmt -> . for_header stmt
+    (87) repeat_stmt -> . REPEAT stmt_list UNTIL expr
+    (88) write_stmt -> . WRITELN LPAREN expr_list RPAREN
+    (56) block -> . block_open stmt_list END
+    (70) empty -> .
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+    (81) for_header -> . FOR designator ASSIGN expr direction expr step_spec DO
+    (55) block_open -> . BEGIN
+
+    IF              shift and go to state 69
+    WHILE           shift and go to state 70
+    REPEAT          shift and go to state 72
+    WRITELN         shift and go to state 73
+    END             reduce using rule 70 (empty -> .)
+    SEMICOLON       reduce using rule 70 (empty -> .)
+    UNTIL           reduce using rule 70 (empty -> .)
+    ID              shift and go to state 74
+    FOR             shift and go to state 75
+    BEGIN           shift and go to state 38
+
+    stmt                           shift and go to state 201
+    assign_stmt                    shift and go to state 58
+    call_stmt                      shift and go to state 59
+    if_stmt                        shift and go to state 60
+    while_stmt                     shift and go to state 61
+    for_stmt                       shift and go to state 62
+    repeat_stmt                    shift and go to state 63
+    write_stmt                     shift and go to state 64
+    block                          shift and go to state 65
+    empty                          shift and go to state 66
+    designator                     shift and go to state 67
+    call                           shift and go to state 68
+    for_header                     shift and go to state 71
+    block_open                     shift and go to state 36
+
+state 186
+
+    (72) designator -> designator LBRACKET expr_list RBRACKET .
+
+    ASSIGN          reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    LBRACKET        reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    LPAREN          reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    END             reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    SEMICOLON       reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    TIMES           reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    DIVIDE          reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    DIV             reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    MOD             reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    AND             reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    EQ              reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    NE              reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    LT              reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    LE              reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    GT              reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    GE              reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    PLUS            reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    MINUS           reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    OR              reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    THEN            reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    DO              reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    UNTIL           reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    ELSE            reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    RPAREN          reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    RBRACKET        reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    COMMA           reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    TO              reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    DOWNTO          reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    RANGE           reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+    STEP            reduce using rule 72 (designator -> designator LBRACKET expr_list RBRACKET .)
+
+
+state 187
+
+    (90) expr_list -> expr_list COMMA . expr
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    expr                           shift and go to state 202
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 188
+
+    (75) call -> designator LPAREN arguments RPAREN .
+
+    LBRACKET        reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    END             reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    SEMICOLON       reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    TIMES           reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    DIVIDE          reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    DIV             reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    MOD             reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    AND             reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    EQ              reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    NE              reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    LT              reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    LE              reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    GT              reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    GE              reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    PLUS            reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    MINUS           reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    OR              reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    THEN            reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    DO              reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    UNTIL           reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    ELSE            reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    RPAREN          reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    RBRACKET        reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    COMMA           reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    TO              reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    DOWNTO          reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    RANGE           reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+    STEP            reduce using rule 75 (call -> designator LPAREN arguments RPAREN .)
+
+
+state 189
+
+    (73) designator -> call LBRACKET expr_list RBRACKET .
+
+    ASSIGN          reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    LBRACKET        reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    LPAREN          reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    END             reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    SEMICOLON       reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    TIMES           reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    DIVIDE          reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    DIV             reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    MOD             reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    AND             reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    EQ              reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    NE              reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    LT              reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    LE              reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    GT              reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    GE              reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    PLUS            reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    MINUS           reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    OR              reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    THEN            reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    DO              reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    UNTIL           reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    ELSE            reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    RPAREN          reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    RBRACKET        reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    COMMA           reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    TO              reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    DOWNTO          reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    RANGE           reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+    STEP            reduce using rule 73 (designator -> call LBRACKET expr_list RBRACKET .)
+
+
+state 190
+
+    (78) if_stmt -> IF expr THEN stmt .
+    (79) if_stmt -> IF expr THEN stmt . ELSE stmt
+
+    END             reduce using rule 78 (if_stmt -> IF expr THEN stmt .)
+    SEMICOLON       reduce using rule 78 (if_stmt -> IF expr THEN stmt .)
+    UNTIL           reduce using rule 78 (if_stmt -> IF expr THEN stmt .)
+    ELSE            shift and go to state 203
+
+  ! ELSE            [ reduce using rule 78 (if_stmt -> IF expr THEN stmt .) ]
+
+
+state 191
+
+    (80) while_stmt -> WHILE expr DO stmt .
+
+    END             reduce using rule 80 (while_stmt -> WHILE expr DO stmt .)
+    SEMICOLON       reduce using rule 80 (while_stmt -> WHILE expr DO stmt .)
+    UNTIL           reduce using rule 80 (while_stmt -> WHILE expr DO stmt .)
+    ELSE            reduce using rule 80 (while_stmt -> WHILE expr DO stmt .)
+
+
+state 192
+
+    (87) repeat_stmt -> REPEAT stmt_list UNTIL expr .
+
+    END             reduce using rule 87 (repeat_stmt -> REPEAT stmt_list UNTIL expr .)
+    SEMICOLON       reduce using rule 87 (repeat_stmt -> REPEAT stmt_list UNTIL expr .)
+    UNTIL           reduce using rule 87 (repeat_stmt -> REPEAT stmt_list UNTIL expr .)
+    ELSE            reduce using rule 87 (repeat_stmt -> REPEAT stmt_list UNTIL expr .)
+
+
+state 193
+
+    (88) write_stmt -> WRITELN LPAREN expr_list RPAREN .
+
+    END             reduce using rule 88 (write_stmt -> WRITELN LPAREN expr_list RPAREN .)
+    SEMICOLON       reduce using rule 88 (write_stmt -> WRITELN LPAREN expr_list RPAREN .)
+    UNTIL           reduce using rule 88 (write_stmt -> WRITELN LPAREN expr_list RPAREN .)
+    ELSE            reduce using rule 88 (write_stmt -> WRITELN LPAREN expr_list RPAREN .)
+
+
+state 194
+
+    (81) for_header -> FOR designator ASSIGN expr . direction expr step_spec DO
+    (83) direction -> . TO
+    (84) direction -> . DOWNTO
+
+    TO              shift and go to state 205
+    DOWNTO          shift and go to state 206
+
+    direction                      shift and go to state 204
+
+state 195
+
+    (50) parameter_groups -> parameter_groups SEMICOLON parameter_group .
+
+    RPAREN          reduce using rule 50 (parameter_groups -> parameter_groups SEMICOLON parameter_group .)
+    SEMICOLON       reduce using rule 50 (parameter_groups -> parameter_groups SEMICOLON parameter_group .)
+
+
+state 196
+
+    (51) parameter_group -> parameter_mode id_list COLON . type
+    (32) type -> . INTEGER
+    (33) type -> . REAL
+    (34) type -> . ID
+    (35) type -> . ARRAY LBRACKET bounds RBRACKET OF type
+
+    INTEGER         shift and go to state 133
+    REAL            shift and go to state 134
+    ID              shift and go to state 131
+    ARRAY           shift and go to state 135
+
+    type                           shift and go to state 207
+
+state 197
+
+    (26) decl_group -> id_list COLON type SEMICOLON .
+
+    error           reduce using rule 26 (decl_group -> id_list COLON type SEMICOLON .)
+    ID              reduce using rule 26 (decl_group -> id_list COLON type SEMICOLON .)
+    BEGIN           reduce using rule 26 (decl_group -> id_list COLON type SEMICOLON .)
+    FUNCTION        reduce using rule 26 (decl_group -> id_list COLON type SEMICOLON .)
+    PROCEDURE       reduce using rule 26 (decl_group -> id_list COLON type SEMICOLON .)
+
+
+state 198
+
+    (35) type -> ARRAY LBRACKET bounds . RBRACKET OF type
+    (37) bounds -> bounds . COMMA bound
+
+    RBRACKET        shift and go to state 208
+    COMMA           shift and go to state 209
+
+
+state 199
+
+    (36) bounds -> bound .
+
+    RBRACKET        reduce using rule 36 (bounds -> bound .)
+    COMMA           reduce using rule 36 (bounds -> bound .)
+
+
+state 200
+
+    (38) bound -> expr . RANGE expr
+
+    RANGE           shift and go to state 210
+
+
+state 201
+
+    (60) stmt_list -> stmt_list SEMICOLON error SEMICOLON stmt .
+
+    END             reduce using rule 60 (stmt_list -> stmt_list SEMICOLON error SEMICOLON stmt .)
+    SEMICOLON       reduce using rule 60 (stmt_list -> stmt_list SEMICOLON error SEMICOLON stmt .)
+    UNTIL           reduce using rule 60 (stmt_list -> stmt_list SEMICOLON error SEMICOLON stmt .)
+
+
+state 202
+
+    (90) expr_list -> expr_list COMMA expr .
+
+    RBRACKET        reduce using rule 90 (expr_list -> expr_list COMMA expr .)
+    COMMA           reduce using rule 90 (expr_list -> expr_list COMMA expr .)
+    RPAREN          reduce using rule 90 (expr_list -> expr_list COMMA expr .)
+
+
+state 203
+
+    (79) if_stmt -> IF expr THEN stmt ELSE . stmt
+    (61) stmt -> . assign_stmt
+    (62) stmt -> . call_stmt
+    (63) stmt -> . if_stmt
+    (64) stmt -> . while_stmt
+    (65) stmt -> . for_stmt
+    (66) stmt -> . repeat_stmt
+    (67) stmt -> . write_stmt
+    (68) stmt -> . block
+    (69) stmt -> . empty
+    (74) assign_stmt -> . designator ASSIGN expr
+    (76) call_stmt -> . call
+    (77) call_stmt -> . designator
+    (78) if_stmt -> . IF expr THEN stmt
+    (79) if_stmt -> . IF expr THEN stmt ELSE stmt
+    (80) while_stmt -> . WHILE expr DO stmt
+    (82) for_stmt -> . for_header stmt
+    (87) repeat_stmt -> . REPEAT stmt_list UNTIL expr
+    (88) write_stmt -> . WRITELN LPAREN expr_list RPAREN
+    (56) block -> . block_open stmt_list END
+    (70) empty -> .
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+    (81) for_header -> . FOR designator ASSIGN expr direction expr step_spec DO
+    (55) block_open -> . BEGIN
+
+    IF              shift and go to state 69
+    WHILE           shift and go to state 70
+    REPEAT          shift and go to state 72
+    WRITELN         shift and go to state 73
+    END             reduce using rule 70 (empty -> .)
+    SEMICOLON       reduce using rule 70 (empty -> .)
+    UNTIL           reduce using rule 70 (empty -> .)
+    ELSE            reduce using rule 70 (empty -> .)
+    ID              shift and go to state 74
+    FOR             shift and go to state 75
+    BEGIN           shift and go to state 38
+
+    stmt                           shift and go to state 211
+    assign_stmt                    shift and go to state 58
+    call_stmt                      shift and go to state 59
+    if_stmt                        shift and go to state 60
+    while_stmt                     shift and go to state 61
+    for_stmt                       shift and go to state 62
+    repeat_stmt                    shift and go to state 63
+    write_stmt                     shift and go to state 64
+    block                          shift and go to state 65
+    empty                          shift and go to state 66
+    designator                     shift and go to state 67
+    call                           shift and go to state 68
+    for_header                     shift and go to state 71
+    block_open                     shift and go to state 36
+
+state 204
+
+    (81) for_header -> FOR designator ASSIGN expr direction . expr step_spec DO
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    designator                     shift and go to state 93
+    expr                           shift and go to state 212
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    call                           shift and go to state 94
+
+state 205
+
+    (83) direction -> TO .
+
+    NUM_INT         reduce using rule 83 (direction -> TO .)
+    NUM_REAL        reduce using rule 83 (direction -> TO .)
+    CHAR_LITERAL    reduce using rule 83 (direction -> TO .)
+    STRING_LITERAL  reduce using rule 83 (direction -> TO .)
+    LPAREN          reduce using rule 83 (direction -> TO .)
+    PLUS            reduce using rule 83 (direction -> TO .)
+    MINUS           reduce using rule 83 (direction -> TO .)
+    NOT             reduce using rule 83 (direction -> TO .)
+    ID              reduce using rule 83 (direction -> TO .)
+
+
+state 206
+
+    (84) direction -> DOWNTO .
+
+    NUM_INT         reduce using rule 84 (direction -> DOWNTO .)
+    NUM_REAL        reduce using rule 84 (direction -> DOWNTO .)
+    CHAR_LITERAL    reduce using rule 84 (direction -> DOWNTO .)
+    STRING_LITERAL  reduce using rule 84 (direction -> DOWNTO .)
+    LPAREN          reduce using rule 84 (direction -> DOWNTO .)
+    PLUS            reduce using rule 84 (direction -> DOWNTO .)
+    MINUS           reduce using rule 84 (direction -> DOWNTO .)
+    NOT             reduce using rule 84 (direction -> DOWNTO .)
+    ID              reduce using rule 84 (direction -> DOWNTO .)
+
+
+state 207
+
+    (51) parameter_group -> parameter_mode id_list COLON type .
+
+    RPAREN          reduce using rule 51 (parameter_group -> parameter_mode id_list COLON type .)
+    SEMICOLON       reduce using rule 51 (parameter_group -> parameter_mode id_list COLON type .)
+
+
+state 208
+
+    (35) type -> ARRAY LBRACKET bounds RBRACKET . OF type
+
+    OF              shift and go to state 213
+
+
+state 209
+
+    (37) bounds -> bounds COMMA . bound
+    (38) bound -> . expr RANGE expr
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    bound                          shift and go to state 214
+    expr                           shift and go to state 200
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 210
+
+    (38) bound -> expr RANGE . expr
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    expr                           shift and go to state 215
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 211
+
+    (79) if_stmt -> IF expr THEN stmt ELSE stmt .
+
+    END             reduce using rule 79 (if_stmt -> IF expr THEN stmt ELSE stmt .)
+    SEMICOLON       reduce using rule 79 (if_stmt -> IF expr THEN stmt ELSE stmt .)
+    UNTIL           reduce using rule 79 (if_stmt -> IF expr THEN stmt ELSE stmt .)
+    ELSE            reduce using rule 79 (if_stmt -> IF expr THEN stmt ELSE stmt .)
+
+
+state 212
+
+    (81) for_header -> FOR designator ASSIGN expr direction expr . step_spec DO
+    (85) step_spec -> . STEP expr
+    (86) step_spec -> . empty
+    (70) empty -> .
+
+    STEP            shift and go to state 217
+    DO              reduce using rule 70 (empty -> .)
+
+    step_spec                      shift and go to state 216
+    empty                          shift and go to state 218
+
+state 213
+
+    (35) type -> ARRAY LBRACKET bounds RBRACKET OF . type
+    (32) type -> . INTEGER
+    (33) type -> . REAL
+    (34) type -> . ID
+    (35) type -> . ARRAY LBRACKET bounds RBRACKET OF type
+
+    INTEGER         shift and go to state 133
+    REAL            shift and go to state 134
+    ID              shift and go to state 131
+    ARRAY           shift and go to state 135
+
+    type                           shift and go to state 219
+
+state 214
+
+    (37) bounds -> bounds COMMA bound .
+
+    RBRACKET        reduce using rule 37 (bounds -> bounds COMMA bound .)
+    COMMA           reduce using rule 37 (bounds -> bounds COMMA bound .)
+
+
+state 215
+
+    (38) bound -> expr RANGE expr .
+
+    RBRACKET        reduce using rule 38 (bound -> expr RANGE expr .)
+    COMMA           reduce using rule 38 (bound -> expr RANGE expr .)
+
+
+state 216
+
+    (81) for_header -> FOR designator ASSIGN expr direction expr step_spec . DO
+
+    DO              shift and go to state 220
+
+
+state 217
+
+    (85) step_spec -> STEP . expr
+    (93) expr -> . simple_expr
+    (94) expr -> . simple_expr relop simple_expr
+    (95) simple_expr -> . term
+    (96) simple_expr -> . simple_expr addop term
+    (97) term -> . factor
+    (98) term -> . term mulop factor
+    (99) factor -> . designator
+    (100) factor -> . call
+    (101) factor -> . NUM_INT
+    (102) factor -> . NUM_REAL
+    (103) factor -> . CHAR_LITERAL
+    (104) factor -> . STRING_LITERAL
+    (105) factor -> . LPAREN expr RPAREN
+    (106) factor -> . PLUS factor
+    (107) factor -> . MINUS factor
+    (108) factor -> . NOT factor
+    (71) designator -> . ID
+    (72) designator -> . designator LBRACKET expr_list RBRACKET
+    (73) designator -> . call LBRACKET expr_list RBRACKET
+    (75) call -> . designator LPAREN arguments RPAREN
+
+    NUM_INT         shift and go to state 95
+    NUM_REAL        shift and go to state 96
+    CHAR_LITERAL    shift and go to state 97
+    STRING_LITERAL  shift and go to state 98
+    LPAREN          shift and go to state 99
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    NOT             shift and go to state 102
+    ID              shift and go to state 74
+
+    expr                           shift and go to state 221
+    simple_expr                    shift and go to state 90
+    term                           shift and go to state 91
+    factor                         shift and go to state 92
+    designator                     shift and go to state 93
+    call                           shift and go to state 94
+
+state 218
+
+    (86) step_spec -> empty .
+
+    DO              reduce using rule 86 (step_spec -> empty .)
+
+
+state 219
+
+    (35) type -> ARRAY LBRACKET bounds RBRACKET OF type .
+
+    SEMICOLON       reduce using rule 35 (type -> ARRAY LBRACKET bounds RBRACKET OF type .)
+    RPAREN          reduce using rule 35 (type -> ARRAY LBRACKET bounds RBRACKET OF type .)
+
+
+state 220
+
+    (81) for_header -> FOR designator ASSIGN expr direction expr step_spec DO .
+
+    IF              reduce using rule 81 (for_header -> FOR designator ASSIGN expr direction expr step_spec DO .)
+    WHILE           reduce using rule 81 (for_header -> FOR designator ASSIGN expr direction expr step_spec DO .)
+    REPEAT          reduce using rule 81 (for_header -> FOR designator ASSIGN expr direction expr step_spec DO .)
+    WRITELN         reduce using rule 81 (for_header -> FOR designator ASSIGN expr direction expr step_spec DO .)
+    ID              reduce using rule 81 (for_header -> FOR designator ASSIGN expr direction expr step_spec DO .)
+    FOR             reduce using rule 81 (for_header -> FOR designator ASSIGN expr direction expr step_spec DO .)
+    BEGIN           reduce using rule 81 (for_header -> FOR designator ASSIGN expr direction expr step_spec DO .)
+    END             reduce using rule 81 (for_header -> FOR designator ASSIGN expr direction expr step_spec DO .)
+    SEMICOLON       reduce using rule 81 (for_header -> FOR designator ASSIGN expr direction expr step_spec DO .)
+    UNTIL           reduce using rule 81 (for_header -> FOR designator ASSIGN expr direction expr step_spec DO .)
+    ELSE            reduce using rule 81 (for_header -> FOR designator ASSIGN expr direction expr step_spec DO .)
+
+
+state 221
+
+    (85) step_spec -> STEP expr .
+
+    DO              reduce using rule 85 (step_spec -> STEP expr .)
+

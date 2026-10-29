@@ -1,0 +1,3 @@
+$ .venv/bin/python yacc.py tests/22-matrix-declaration.pas
+Compilation succeeded.
+[exit code: 0]

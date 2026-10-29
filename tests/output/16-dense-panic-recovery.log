@@ -1,0 +1,10 @@
+$ .venv/bin/python yacc.py tests/16-dense-panic-recovery.pas
+Syntax error at 3:21: unexpected ';' (SEMICOLON)
+Syntax error at 4:26: unexpected 'integer' (INTEGER)
+Syntax error at 7:10: unexpected ';' (SEMICOLON)
+Syntax error at 8:10: unexpected ';' (SEMICOLON)
+Syntax error at 10:19: unexpected '2' (NUM_INT)
+Syntax error at 11:17: unexpected ')' (RPAREN)
+Syntax error at 14:15: unexpected ')' (RPAREN)
+Syntax error at 15:15: unexpected '5' (NUM_INT)
+[exit code: 1]

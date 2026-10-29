@@ -1,0 +1,3 @@
+$ .venv/bin/python yacc.py tests/33-variable-called-as-function.pas
+Semantic error at 5:13: 'round' is not a function
+[exit code: 1]

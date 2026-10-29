@@ -1,0 +1,3 @@
+$ .venv/bin/python yacc.py tests/11-complex-control-flow.pas
+Compilation succeeded.
+[exit code: 0]
