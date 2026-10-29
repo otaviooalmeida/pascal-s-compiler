@@ -54,6 +54,7 @@ class PascalLexer:
         self.symbols = symbols
         self.manage_scopes = manage_scopes
         self.errors = 0
+        self.error_lines = set()
         self.comment_start = None
         self.buffer = ""
         self.lexer = ply_lex.lex(object=self)
@@ -98,12 +99,10 @@ class PascalLexer:
                 elif token.type == "END":
                     self.symbols.pop()
         else:
-            # As ações semânticas recebem diretamente o registro em token.value.
             token.lexeme = token.value
             token.value = token.lexer.owner.symbols.reference(token.value, token.lineno)
         return token
 
-    # O front-end precisa do tipo e do lexema, não de avaliar os números em Python.
     def t_NUM_REAL(self, token):
         r"\d+\.\d+"
         return token
@@ -146,6 +145,7 @@ class PascalLexer:
     def lexical_error(self, token, message):
         print(f"Lexical error at {token.lineno}:{token.lexpos + 1}: {message}", file=sys.stderr)
         self.errors += 1
+        self.error_lines.add(token.lineno)
 
     def t_error(self, token):
         self.lexical_error(token, f"illegal character {token.value[0]!r}")
@@ -155,14 +155,12 @@ class PascalLexer:
         token.lexer.skip(1)
 
     def position(self):
-        """Retorna a posição física alcançada no fim da entrada."""
 
         if self.buffer.endswith("\n"):
             return self.lexer.lineno, 1
         return self.lexer.lineno, len(self.buffer.rstrip("\r\n")) + 1
 
     def token(self):
-        """Retorna um token e carrega outra linha somente quando necessário."""
 
         while True:
             token = self.lexer.token()
@@ -175,6 +173,7 @@ class PascalLexer:
                     row, column = self.comment_start
                     print(f"Lexical error at {row}:{column}: unterminated block comment", file=sys.stderr)
                     self.errors += 1
+                    self.error_lines.add(row)
                     self.lexer.begin("INITIAL")
                 return None
             self.buffer = line

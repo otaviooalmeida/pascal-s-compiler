@@ -23,7 +23,7 @@ begin
   y := true;
   x := somar(5, );
 
-  x := true;
+  x := 3;
   z := 100;
   x := somar(10, 'texto');
 end.

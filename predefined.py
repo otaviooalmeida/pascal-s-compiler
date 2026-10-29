@@ -1,5 +1,3 @@
-"""Assinaturas conhecidas: não carrega bibliotecas nem executa rotinas externas."""
-
 from symbol_table import Parameter
 
 
@@ -8,12 +6,13 @@ LIBRARIES = {
         ("clrscr", (), None),
         ("keypressed", (), "boolean"),
         ("readkey", (), "char"),
-        ("delay", (Parameter("integer"),), None),
+        ("delay", (Parameter("milliseconds", "integer"),), None),
     ),
     "graph": (
-        ("initgraph", (Parameter("integer", True), Parameter("integer", True), Parameter("string")), None),
-        ("line", (Parameter("integer"),) * 4, None),
-        ("setcolor", (Parameter("integer"),), None),
+        ("initgraph", (Parameter("driver", "integer", True), Parameter("mode", "integer", True),
+                       Parameter("path", "string")), None),
+        ("line", tuple(Parameter(name, "integer") for name in ("x1", "y1", "x2", "y2")), None),
+        ("setcolor", (Parameter("color", "integer"),), None),
         ("closegraph", (), None),
     ),
 }
@@ -32,7 +31,6 @@ def install(symbols):
         symbols.declare_builtin(name, (), None, io_mode=name)
     for name in ("sin", "cos", "sqrt", "exp", "ln", "arctan"):
         symbols.declare_builtin(name, (("integer", "real"),), "real")
-    # round é intencionalmente externo ao escopo solicitado, inclusive com uses Math.
 
 
 def import_library(symbols, name):
